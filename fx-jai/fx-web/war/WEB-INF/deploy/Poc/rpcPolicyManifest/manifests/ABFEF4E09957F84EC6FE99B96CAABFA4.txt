@@ -1,2 +1,0 @@
-serviceClass: com.dmma.fxjai.web.gwt.poc.client.services.PocGWTService
-path: F0DBA86DB62D8DDD9B8168D7B39981FF.gwt.rpc
