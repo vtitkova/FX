@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+
+	<bean id="dataSource" class="com.dmma.fxjai.core.configuration.ApplicationDataSource" destroy-method="close">
+	</bean>
+		
+	<!-- HIBERNATE SESSION FACTORY -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configurationClass" value="com.dmma.fxjai.core.configuration.ApplicationConfiguration" />
+	</bean>
+
+
+	<!-- All beans that handles business logic -->
+	
+	<!-- DAOs -->
+	<bean id="pocDao"          class="com.dmma.fxjai.core.daos.PocDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<!-- end DAOs -->
+
+	<!-- Services -->
+	<bean id="pocService"         class="com.dmma.fxjai.core.services.PocService">
+		<property name="pocDao" ref="pocDao"/>
+	</bean>
+	<!-- Services -->
+
+</beans>

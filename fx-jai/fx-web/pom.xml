@@ -15,12 +15,13 @@
 	<packaging>war</packaging>
 	<name>FX WEB - WEB application</name>
 
-	<properties>
-		<gwt.version>2.3.0</gwt.version>
-		<gwtplugin.version>2.3.0</gwtplugin.version>
-	</properties>
-	
 	<dependencies>
+		<!-- ***************************** PARRENT MODULES ***************************** -->
+		<dependency>
+            <groupId>${pom.parent.groupId}</groupId>
+            <artifactId>fx-core</artifactId>
+            <version>${pom.parent.version}</version>
+        </dependency>	
 		<!-- ***************************** GOOGLE ***************************** -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -40,6 +41,19 @@
             <version>${gwt.version}</version>
             <scope>test</scope>
         </dependency> 
+        <dependency>
+            <groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <scope>provided</scope>
+		</dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <classifier>sources</classifier>
+            <scope>provided</scope>
+		</dependency> 
 	</dependencies>
 	
 	<build>
@@ -64,6 +78,49 @@
 							<goal>compile</goal>
 							<goal>test</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<warSourceDirectory>war</warSourceDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset><directory>logs</directory></fileset>
+						<fileset><directory>../logs</directory></fileset>
+						<fileset><directory>.gwt</directory></fileset>
+						<fileset><directory>war/Poc</directory></fileset>
+                       	<fileset><directory>war/WEB-INF/deploy</directory></fileset> 
+						<fileset><directory>war/WEB-INF/classes</directory></fileset> 
+						<fileset><directory>war/WEB-INF/lib</directory></fileset>							
+                    </filesets>
+                </configuration>
+            </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/war/WEB-INF/lib/</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							<excludeArtifactIds>gwt-user, gwt-dev, gwt-servlet</excludeArtifactIds>
+							<excludeGroupIds>${pom.parent.groupId}</excludeGroupIds>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

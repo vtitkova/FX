@@ -1,9 +1,16 @@
 package com.dmma.fxjai.web.gwt.poc.server.services;
 
 import java.util.ArrayList;
-import java.util.Date;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.dmma.fxjai.core.services.PocService;
 import com.dmma.fxjai.web.gwt.poc.client.services.PocGWTService;
+import com.dmma.fxjai.web.gwt.poc.server.mappers.PocMapper;
 import com.dmma.fxjai.web.gwt.poc.shared.entities.PocDTO;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -12,18 +19,18 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  */
 public class PocGWTServiceImpl extends RemoteServiceServlet implements PocGWTService {
 	private static final long serialVersionUID = -8849195396928815111L;
-
+	private PocService pocService;
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(config.getServletContext());
+		pocService    = context.getBean("pocService",   PocService.class);
+	}
+	
 	@Override
 	public ArrayList<PocDTO> findLastPocs() {
-		ArrayList<PocDTO> pocs = new ArrayList<PocDTO>();
-		for(int i = 0 ; i < 10 ; i++){
-			PocDTO p = new PocDTO();
-			p.setId(i);
-			p.setText("someText"+i);
-			p.setCreated(new Date());
-			pocs.add(p);
-		}
-		return pocs;
+		return PocMapper.toDTOs(pocService.findAll());
 	}
 
 	@Override
@@ -31,15 +38,4 @@ public class PocGWTServiceImpl extends RemoteServiceServlet implements PocGWTSer
 		return 11;
 	}
 	
-	/*protected PocService   bankOfficeService;
-	private   UserRoleService     userRoleService;
-	
-	@Override
-	protected void initMe(WebApplicationContext context) {
-		bankOfficeService = context.getBean("bankOfficeService", BankOfficeService.class);
-		userRoleService   = context.getBean("userRoleService",   UserRoleService.class);
-	}*/
-
-
-
 }

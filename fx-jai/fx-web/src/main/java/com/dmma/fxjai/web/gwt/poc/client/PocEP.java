@@ -37,7 +37,7 @@ public class PocEP implements EntryPoint{
 					int row = table.getRowCount();
 					table.setHTML(row, 0, p.getId()+"");
 					table.setHTML(row, 1, p.getText());
-					table.setHTML(row, 2, p.getCreated().toString());
+					table.setHTML(row, 2, ""+p.getCreated());
 				}
 			}
 			@Override

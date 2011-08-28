@@ -24,6 +24,7 @@
 	</repositories>
 	
 	<modules>
+		<module>fx-core</module>
 		<module>fx-web</module>
 	</modules>
 
@@ -31,6 +32,14 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.source>1.6</jdk.source>
 		<jdk.target>1.6</jdk.target>
+		
+		<gwt.version>2.3.0</gwt.version>
+		<gwtplugin.version>2.3.0</gwtplugin.version>
+		<spring.version>3.0.3.RELEASE</spring.version>
+		<hibernate.version>3.5.6-Final</hibernate.version>
+		<constretto.version>1.1.2</constretto.version>
+		<mysqlconnector.version>5.1.17</mysqlconnector.version>
+		<slf4j.version>1.6.2</slf4j.version>
 	</properties>
 
 	<build>
@@ -49,7 +58,82 @@
 	</build>
 
 	<dependencies>
+		<!-- ***************************** SPRING ***************************** -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+	
+		<!-- ***************************** HIBERNATE ***************************** -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-annotations</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+        	<groupId>org.hibernate</groupId>
+        	<artifactId>hibernate-c3p0</artifactId>
+        	<version>${hibernate.version}</version>
+    	</dependency>
+    	<dependency>
+        	<groupId>org.hibernate</groupId>
+        	<artifactId>hibernate-validator</artifactId>
+        	<version>4.1.0.Final</version>
+    	</dependency>
+    	<!-- ************************** Constretto *************************** -->
+		<dependency>
+			<groupId>org.constretto</groupId>
+			<artifactId>constretto-api</artifactId>
+			<version>${constretto.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.constretto</groupId>
+			<artifactId>constretto-core</artifactId>
+			<version>${constretto.version}</version>
+		</dependency>
+		<!-- ***************************** MySQL ***************************** -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysqlconnector.version}</version>
+		</dependency>
+		<!-- ************************** Other *************************** -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
 	</dependencies>
-		
 	
 </project>
