@@ -21,7 +21,12 @@
             <groupId>${pom.parent.groupId}</groupId>
             <artifactId>fx-core</artifactId>
             <version>${pom.parent.version}</version>
-        </dependency>	
+        </dependency>
+		<dependency>
+            <groupId>${pom.parent.groupId}</groupId>
+            <artifactId>fx-connector</artifactId>
+            <version>${pom.parent.version}</version>
+        </dependency>			
 		<!-- ***************************** GOOGLE ***************************** -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>

@@ -25,6 +25,8 @@
 	
 	<modules>
 		<module>fx-core</module>
+		<module>fx-connector</module>
+		<module>fx-connector-client</module>
 		<module>fx-web</module>
 	</modules>
 
