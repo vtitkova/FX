@@ -5,7 +5,7 @@ import org.constretto.annotation.Configure;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Environment;
 
-import com.dmma.fxjai.core.entities.Poc;
+import com.dmma.fxjai.db.entities.Poc;
 
 
 public class ApplicationConfiguration extends AnnotationConfiguration{

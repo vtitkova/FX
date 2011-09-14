@@ -3,7 +3,7 @@ package com.dmma.fxjai.web.gwt.poc.server.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dmma.fxjai.core.entities.Poc;
+import com.dmma.fxjai.db.entities.Poc;
 import com.dmma.fxjai.web.gwt.poc.shared.entities.PocDTO;
 
 public class PocMapper {

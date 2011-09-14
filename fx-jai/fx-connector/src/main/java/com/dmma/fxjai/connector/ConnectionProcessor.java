@@ -9,22 +9,22 @@ import java.util.Date;
 import org.slf4j.Logger;
 
 import com.dmma.fxjai.connector.errors.ConnectionError;
-import com.dmma.fxjai.core.entities.Poc;
-import com.dmma.fxjai.core.services.PocService;
+import com.dmma.fxjai.core.services.MetaTraderService;
+import com.dmma.fxjai.core.types.SymbolType;
 
-public class ConnectionControlTread implements Runnable{
+public class ConnectionProcessor implements Runnable{
 	private Socket fromClientSocket;
 	private ConnectorStatus connectorStatus;
 	private Logger log;
 	private DataOutputStream toClient;
 	private DataInputStream  fromClient;
-	private PocService pocService;
+	private MetaTraderService metaTraderService;
 	
-	public ConnectionControlTread(PocService pocService, Socket fromClientSocket,ConnectorStatus connectorStatus, Logger log) {
+	public ConnectionProcessor(MetaTraderService metaTraderService, Socket fromClientSocket,ConnectorStatus connectorStatus, Logger log) {
 		this.fromClientSocket = fromClientSocket;
 		this.connectorStatus  = connectorStatus;
 		this.log              = log;
-		this.pocService = pocService;
+		this.metaTraderService = metaTraderService;
 	}
 
 	
@@ -32,14 +32,16 @@ public class ConnectionControlTread implements Runnable{
 	@Override
 	public void run() {
 		this.connectorStatus.connectionProcessStarted();
-		String accountLogin;
+		String msgFromClient;
 		
 		try {
-			toClient = new DataOutputStream( fromClientSocket.getOutputStream());
+			toClient = new DataOutputStream(fromClientSocket.getOutputStream());
 			toClient.flush();
-			fromClient = new DataInputStream(  fromClientSocket.getInputStream());
+			fromClient = new DataInputStream(fromClientSocket.getInputStream());
+			
 			// any message from client starts with client account id
-			accountLogin   = fromClient.readLine();	
+			msgFromClient   = fromClient.readLine();	
+			
 			//String msgType = fromClient.readLine();
 			 
 		    /* if(IncomeMsgType.isPing.isEequals(msgType)){
@@ -47,7 +49,7 @@ public class ConnectionControlTread implements Runnable{
 			}else if(IncomeMsgType.isRegistration.isEequals(msgType)){
 				//processRegistration(accountLogin);
 			}else if(IncomeMsgType.isActual.isEequals("3")){*/
-			processActualMsg(accountLogin);
+			processActualMsg(msgFromClient);
 			/*}else{
 				this.connectorStatus.connectionProcessRejected();
 				log.warn("Connection rejected - Unknown type:" +msgType);
@@ -100,25 +102,25 @@ public class ConnectionControlTread implements Runnable{
 	}*/
 
 	
-	private void processActualMsg(String accountLogin) throws IOException, ConnectionError{
+	private void processActualMsg(String msgFromClient) throws IOException, ConnectionError{
 		/*if(!CoreServiceFactory.get().getAccountService().isAccountExist(accountLogin)){
 			throw new ConnectionError(accountLogin,ConnectionErrorTypes.UNKNOWN_ACCOUNT_LOGIN);
 		}*/
 		
-		String aa[] = accountLogin.split(";");
+		String aa[] = msgFromClient.split(";");
+		// account|msgType|SYMBOL|BID   |DATE         
+		String account   = aa[0];
+		String msgType   = aa[1];
+		String symbolStr = aa[2];
+		String bidStr    = aa[3];
+		String dateLongString = aa[4];
 		
-		Poc poc = new Poc();
-		poc.setCreated(new Date());
-		String symbol = aa[1]; //fromClient.readUTF();
-		String bid    = aa[2]; // fromClient.readUTF();
-		poc.setText(symbol+bid);
-		pocService.saveOrUpdate(poc);
+		SymbolType symbol = SymbolType.findByStr(symbolStr.replace(".",""));
+		Double bid =Double.valueOf(bidStr);
+		Date date = new Date(Long.valueOf(dateLongString));
 		
-/*		CoreEvent event = new CoreEvent(EKC.ACTUAL_EVENT, this.getClass().getSimpleName());
-		event.addParam(EPC.SYMBOL, symbol);
-		event.addParam(EPC.BID, bid);
-		CoreEventManager.get().fireEvent(event);
-*/		log.info("Actual from client: " +accountLogin + "|" +symbol + "|"+bid);
+		metaTraderService.setActual(account, symbol, bid, date);
+		
 	}
 	
 	

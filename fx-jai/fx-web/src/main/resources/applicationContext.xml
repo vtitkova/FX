@@ -21,20 +21,20 @@
 	<!-- All beans that handles business logic -->
 	
 	<!-- DAOs -->
-	<bean id="pocDao"          class="com.dmma.fxjai.core.daos.PocDao">
+	<bean id="pocDao"          class="com.dmma.fxjai.db.daos.PocDao">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<!-- end DAOs -->
 
 	<!-- Services -->
-	<bean id="pocService"         class="com.dmma.fxjai.core.services.PocService">
+	<bean id="metaTraderService"         class="com.dmma.fxjai.core.services.MetaTraderService">
 		<property name="pocDao" ref="pocDao"/>
 	</bean>
 	<!-- Services -->
 
 
 	<bean id="connector"  class="com.dmma.fxjai.connector.Connector">
-		<property name="pocService" ref="pocService"/>
+		<property name="metaTraderService" ref="metaTraderService"/>
 	</bean>
 	
 </beans>

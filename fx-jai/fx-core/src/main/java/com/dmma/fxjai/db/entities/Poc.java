@@ -1,4 +1,4 @@
-package com.dmma.fxjai.core.entities;
+package com.dmma.fxjai.db.entities;
 
 import java.util.Date;
 

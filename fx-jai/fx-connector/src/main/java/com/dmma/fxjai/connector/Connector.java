@@ -8,7 +8,7 @@ import java.net.SocketAddress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dmma.fxjai.core.services.PocService;
+import com.dmma.fxjai.core.services.MetaTraderService;
 
 public class Connector implements Runnable{
 	private static Connector INSTANCE;
@@ -17,7 +17,7 @@ public class Connector implements Runnable{
 	private ServerSocket servSocket;
 	private ConnectorStatus connectorStatus;
 	
-	private PocService pocService;
+	private MetaTraderService metaTraderService;
 	
 	public static Connector get() {
 		return INSTANCE;
@@ -47,9 +47,8 @@ public class Connector implements Runnable{
 				Socket fromClientSocket = servSocket.accept();
 				SocketAddress fromAddress  = fromClientSocket.getRemoteSocketAddress();
 				log.info("Corrnection request accepted from " + fromAddress);
-				
-				ConnectionControlTread ot = new ConnectionControlTread(pocService, fromClientSocket, connectorStatus, log);
-				Thread t = new Thread(ot);
+				ConnectionProcessor connectionProcessor = new ConnectionProcessor(metaTraderService, fromClientSocket, connectorStatus, log);
+				Thread t = new Thread(connectionProcessor);
 				t.start();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -77,12 +76,8 @@ public class Connector implements Runnable{
 		return connectorStatus.getConnectionsActive();
 	}
 
-	public PocService getPocService() {
-		return pocService;
-	}
-
-	public void setPocService(PocService pocService) {
-		this.pocService = pocService;
+	public void setMetaTraderService(MetaTraderService metaTraderService) {
+		this.metaTraderService = metaTraderService;
 	}
 
 }
