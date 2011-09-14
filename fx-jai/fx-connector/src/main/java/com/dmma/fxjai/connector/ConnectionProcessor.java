@@ -9,6 +9,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 
 import com.dmma.fxjai.connector.errors.ConnectionError;
+import com.dmma.fxjai.connector.types.IncomeMsgType;
 import com.dmma.fxjai.core.services.MetaTraderService;
 import com.dmma.fxjai.core.types.SymbolType;
 
@@ -42,15 +43,20 @@ public class ConnectionProcessor implements Runnable{
 			// any message from client starts with client account id
 			msgFromClient   = fromClient.readLine();	
 			
+			String messageArray[] = msgFromClient.split(";");
+			String msgType   = messageArray[1];
+			Integer msgId = Integer.valueOf(msgType);
+			
 			//String msgType = fromClient.readLine();
 			 
-		    /* if(IncomeMsgType.isPing.isEequals(msgType)){
-				//processPingMsg(accountLogin);
-			}else if(IncomeMsgType.isRegistration.isEequals(msgType)){
+		    if(IncomeMsgType.isPing.isEequals(msgId)){
+				processPingMsg(messageArray);
+			}else if(IncomeMsgType.isRegistration.isEequals(msgId)){
 				//processRegistration(accountLogin);
-			}else if(IncomeMsgType.isActual.isEequals("3")){*/
-			processActualMsg(msgFromClient);
-			/*}else{
+			}else if(IncomeMsgType.isActual.isEequals("3")){
+				processActualMsg(messageArray);
+			}
+			/*else{
 				this.connectorStatus.connectionProcessRejected();
 				log.warn("Connection rejected - Unknown type:" +msgType);
 				sendMessage("Connection rejected - Unknown type:" +msgType);
@@ -92,28 +98,23 @@ public class ConnectionProcessor implements Runnable{
 		sendMessage(retVal.toString());
 	}
 */
+	// account|msgType|free text 
+	private void processPingMsg(String[] messageArray) throws IOException {
+		String account  = messageArray[0];
+		String freeText = messageArray[2];
 
-	/*private void processPingMsg(String accountLogin) throws IOException {
-		String msg = fromClient.readLine();
-		log.info("Ping from client: " +accountLogin + "|" +IncomeMsgType.isPing + "|"+msg);
-		//01|Hello client xxxxx, you sent me 'test text sent to server'
+		log.info("Ping from client: " +account + "|" +IncomeMsgType.isPing + "|"+freeText);
 		sendMessage(OutcomeMsgType.isPong.toString());
 		sendMessage("Hello client "+accountLogin+", you sent me '"+msg+"'");
-	}*/
+	}
 
 	
-	private void processActualMsg(String msgFromClient) throws IOException, ConnectionError{
-		/*if(!CoreServiceFactory.get().getAccountService().isAccountExist(accountLogin)){
-			throw new ConnectionError(accountLogin,ConnectionErrorTypes.UNKNOWN_ACCOUNT_LOGIN);
-		}*/
-		
-		String aa[] = msgFromClient.split(";");
-		// account|msgType|SYMBOL|BID   |DATE         
-		String account   = aa[0];
-		String msgType   = aa[1];
-		String symbolStr = aa[2];
-		String bidStr    = aa[3];
-		String dateLongString = aa[4];
+	// account|msgType|SYMBOL|BID   |DATE         
+	private void processActualMsg(String[] messageArray) throws IOException, ConnectionError{
+		String account   = messageArray[0];
+		String symbolStr = messageArray[2];
+		String bidStr    = messageArray[3];
+		String dateLongString = messageArray[4];
 		
 		SymbolType symbol = SymbolType.findByStr(symbolStr.replace(".",""));
 		Double bid =Double.valueOf(bidStr);
