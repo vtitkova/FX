@@ -1,8 +1,10 @@
 package com.dmma.fxjai.connector;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Date;
 
@@ -10,6 +12,7 @@ import org.slf4j.Logger;
 
 import com.dmma.fxjai.connector.errors.ConnectionError;
 import com.dmma.fxjai.connector.types.IncomeMsgType;
+import com.dmma.fxjai.connector.types.OutcomeMsgType;
 import com.dmma.fxjai.core.services.MetaTraderService;
 import com.dmma.fxjai.core.types.SymbolType;
 
@@ -17,8 +20,8 @@ public class ConnectionProcessor implements Runnable{
 	private Socket fromClientSocket;
 	private ConnectorStatus connectorStatus;
 	private Logger log;
-	private DataOutputStream toClient;
-	private DataInputStream  fromClient;
+	private BufferedWriter  toClient;
+	private BufferedReader  fromClient;
 	private MetaTraderService metaTraderService;
 	
 	public ConnectionProcessor(MetaTraderService metaTraderService, Socket fromClientSocket,ConnectorStatus connectorStatus, Logger log) {
@@ -29,17 +32,20 @@ public class ConnectionProcessor implements Runnable{
 	}
 
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		this.connectorStatus.connectionProcessStarted();
 		String msgFromClient;
 		
 		try {
-			toClient = new DataOutputStream(fromClientSocket.getOutputStream());
-			toClient.flush();
-			fromClient = new DataInputStream(fromClientSocket.getInputStream());
+			// toClient = new DataOutputStream(fromClientSocket.getOutputStream());
+			// toClient.flush();
+			// fromClient = new DataInputStream(fromClientSocket.getInputStream());
 			
+			toClient   = new BufferedWriter(new OutputStreamWriter(fromClientSocket.getOutputStream()));
+			fromClient = new BufferedReader(new InputStreamReader(fromClientSocket.getInputStream()));
+
+			 
 			// any message from client starts with client account id
 			msgFromClient   = fromClient.readLine();	
 			
@@ -53,7 +59,7 @@ public class ConnectionProcessor implements Runnable{
 				processPingMsg(messageArray);
 			}else if(IncomeMsgType.isRegistration.isEequals(msgId)){
 				//processRegistration(accountLogin);
-			}else if(IncomeMsgType.isActual.isEequals("3")){
+			}else if(IncomeMsgType.isActual.isEequals("3")){  //TODO wtf
 				processActualMsg(messageArray);
 			}
 			/*else{
@@ -73,6 +79,7 @@ public class ConnectionProcessor implements Runnable{
 			sendMessage("Connection rejected - account: " + e.getLogin() + ", reason: "+e.getReason());
 		}finally{
 			try{
+				toClient.flush();
 				fromClient.close();
 				toClient.close();
 				fromClientSocket.close();
@@ -104,10 +111,18 @@ public class ConnectionProcessor implements Runnable{
 		String freeText = messageArray[2];
 
 		log.info("Ping from client: " +account + "|" +IncomeMsgType.isPing + "|"+freeText);
-		sendMessage(OutcomeMsgType.isPong.toString());
-		sendMessage("Hello client "+accountLogin+", you sent me '"+msg+"'");
+		
+		String out = OutcomeMsgType.isPong.getId()+";";
+		out+="Hello client "+account+", you sent me <"+freeText+">";
+		//out = "1111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000";
+		//out += "1111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000";
+		//out += "1111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000";
+		
+		sendMessage(out);
+		sendMessage("hehe");
 	}
 
+//6666777777777788888888889999999999000000000055555566666666667777777777888888888899999999990000000000111111111122222222223333333333444444444455555555556666666666777777777788888888889999999999000000000011111111112222222222333333333344444444445555555555666666ллллллллP⌡nлллллллл
 	
 	// account|msgType|SYMBOL|BID   |DATE         
 	private void processActualMsg(String[] messageArray) throws IOException, ConnectionError{
@@ -126,12 +141,11 @@ public class ConnectionProcessor implements Runnable{
 	
 	
 	
-
 	void sendMessage(String msg){
 		try{
-			toClient.writeUTF(msg);
-			toClient.flush();
-			System.out.println("server -> client" + msg);
+			toClient.write(msg);
+			toClient.newLine();
+			System.out.println("server -> client: " + msg);
 		}
 		catch(IOException ioException){
 			ioException.printStackTrace();
