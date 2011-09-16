@@ -2,15 +2,15 @@ package com.dmma.fxjai.core.types;
 
 
 public enum PeriodType {
-	isM1(    1, "1 минута"),
-	isM5(    5, "5 минут"),
-	isM15(  15, "15 минут"),
-	isM30(  30, "30 минут"),
-	isH1(   60, "1 час"),
-	isH4(  240, "4 часа"),
-	isD1( 1440, "1 день"),
-	isW1(10080, "1 неделя"),
-	isMN(43200, "1 месяц");
+	isM1(    1, "1"),
+	isM5(    5, "5"),
+	isM15(  15, "15"),
+	isM30(  30, "30"),
+	isH1(   60, "1"),
+	isH4(  240, "4"),
+	isD1( 1440, "1"),
+	isW1(10080, "1"),
+	isMN(43200, "1");
 	
 	private int    id;
 	private String name;
