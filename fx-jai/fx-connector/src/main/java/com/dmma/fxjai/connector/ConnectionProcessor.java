@@ -13,17 +13,21 @@ import org.slf4j.Logger;
 import com.dmma.fxjai.connector.errors.ConnectionError;
 import com.dmma.fxjai.connector.types.IncomeMsgType;
 import com.dmma.fxjai.connector.types.OutcomeMsgType;
+import com.dmma.fxjai.core.entities.BarDTO;
 import com.dmma.fxjai.core.services.MetaTraderService;
+import com.dmma.fxjai.core.types.AccountType;
+import com.dmma.fxjai.core.types.PeriodType;
 import com.dmma.fxjai.core.types.SymbolType;
 
 public class ConnectionProcessor implements Runnable{
+	public static final String SEPARATOR = ";";
 	private Socket fromClientSocket;
 	private ConnectorStatus connectorStatus;
 	private Logger log;
 	private BufferedWriter  toClient;
 	private BufferedReader  fromClient;
 	private MetaTraderService metaTraderService;
-	
+
 	public ConnectionProcessor(MetaTraderService metaTraderService, Socket fromClientSocket,ConnectorStatus connectorStatus, Logger log) {
 		this.fromClientSocket = fromClientSocket;
 		this.connectorStatus  = connectorStatus;
@@ -31,43 +35,36 @@ public class ConnectionProcessor implements Runnable{
 		this.metaTraderService = metaTraderService;
 	}
 
-	
+
 	@Override
 	public void run() {
 		this.connectorStatus.connectionProcessStarted();
-		String msgFromClient;
-		
 		try {
-			// toClient = new DataOutputStream(fromClientSocket.getOutputStream());
-			// toClient.flush();
-			// fromClient = new DataInputStream(fromClientSocket.getInputStream());
-			
 			toClient   = new BufferedWriter(new OutputStreamWriter(fromClientSocket.getOutputStream()));
 			fromClient = new BufferedReader(new InputStreamReader(fromClientSocket.getInputStream()));
 
-			 
 			// any message from client starts with client account id
-			msgFromClient   = fromClient.readLine();	
-			
-			String messageArray[] = msgFromClient.split(";");
-			String msgType   = messageArray[1];
-			Integer msgId = Integer.valueOf(msgType);
-			
-			//String msgType = fromClient.readLine();
-			 
-		    if(IncomeMsgType.isPing.isEequals(msgId)){
-				processPingMsg(messageArray);
-			}else if(IncomeMsgType.isRegistration.isEequals(msgId)){
-				//processRegistration(accountLogin);
-			}else if(IncomeMsgType.isActual.isEequals("3")){  //TODO wtf
-				processActualMsg(messageArray);
+			String msgFromClient   = fromClient.readLine();	
+
+			String messageArray[] = msgFromClient.split(SEPARATOR);
+			String msgTypeStr     = messageArray[0];
+
+			IncomeMsgType msgType = IncomeMsgType.findById(msgTypeStr);
+			switch (msgType) {
+			case isPing:
+				processPing(messageArray);
+				break;
+			case isRegistration:
+				processRegistration(messageArray);
+				break;
+			case isActual:
+				processActual(messageArray);
+				break;
+			case isBarUpdate:
+				processBarUpdate(messageArray);
+				break;
 			}
-			/*else{
-				this.connectorStatus.connectionProcessRejected();
-				log.warn("Connection rejected - Unknown type:" +msgType);
-				sendMessage("Connection rejected - Unknown type:" +msgType);
-				return;
-			}*/
+
 			this.connectorStatus.connectionProcessSucceed();
 		}catch (IOException e) {
 			this.connectorStatus.connectionProcessFailed();
@@ -89,58 +86,89 @@ public class ConnectionProcessor implements Runnable{
 		}
 	}
 
-	
-	/*private void processRegistration(String accountLogin) throws IOException, ConnectionError {
-		String accountType = fromClient.readUTF();
-		AccountType type = AccountType.findByName(accountType);
-		if(accountType==null){
-			throw new ConnectionError(accountLogin, ConnectionErrorTypes.UNKNOWN_ACCOUNT_TYPE);
-		}
-		String name = fromClient.readUTF();
-		String surname = fromClient.readUTF();
-		String serverUrl = fromClient.readUTF();
-			
-		Boolean retVal = CoreServiceFactory.get().getAccountService().registerOrUpdateAccount(accountLogin, type, name, surname, serverUrl);
-		sendMessage(OutcomeMsgType.isRegistrationStatus.toString());
-		sendMessage(retVal.toString());
-	}
-*/
-	// account|msgType|free text 
-	private void processPingMsg(String[] messageArray) throws IOException {
-		String account  = messageArray[0];
-		String freeText = messageArray[2];
+	/**
+	 * {@link IncomeMsgType#isPing}
+	 * */  
+	private void processPing(String[] messageArray) throws IOException {
+		String pingText  = messageArray[1];
+		log.info("Ping from client:" +pingText);
 
-		log.info("Ping from client: " +account + "|" +IncomeMsgType.isPing + "|"+freeText);
-		
-		String out = OutcomeMsgType.isPong.getId()+";";
-		out+="Hello client "+account+", you sent me <"+freeText+">";
+		StringBuilder pongText = new StringBuilder(OutcomeMsgType.isPong.getId());
+		pongText.append(SEPARATOR);
+		pongText.append("Hello, you sent me <");
+		pongText.append(pingText);
+		pongText.append(">");
+
 		//out = "1111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000";
 		//out += "1111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000";
 		//out += "1111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000";
-		
-		sendMessage(out);
+
+		sendMessage(pongText.toString());
 		sendMessage("hehe");
 	}
 
-//6666777777777788888888889999999999000000000055555566666666667777777777888888888899999999990000000000111111111122222222223333333333444444444455555555556666666666777777777788888888889999999999000000000011111111112222222222333333333344444444445555555555666666ллллллллP⌡nлллллллл
-	
-	// account|msgType|SYMBOL|BID   |DATE         
-	private void processActualMsg(String[] messageArray) throws IOException, ConnectionError{
-		String account   = messageArray[0];
-		String symbolStr = messageArray[2];
-		String bidStr    = messageArray[3];
+	/**
+	 * {@link IncomeMsgType#isRegistration}
+	 * */  
+	private void processRegistration(String[] messageArray) throws IOException, ConnectionError {
+		String account  = messageArray[1];
+		String type     = messageArray[2];
+		String userName = messageArray[3];
+		String server   = messageArray[4];
+
+		AccountType accountType = AccountType.findByName(type);
+
+		int accountId = metaTraderService.processRegistration(account, accountType, userName, server);
+
+		StringBuilder response = new StringBuilder(OutcomeMsgType.isRegistrationStatus.getId());
+		response.append(SEPARATOR);
+		response.append(accountId);
+		sendMessage(response.toString());
+	}
+
+	/**
+	 * {@link IncomeMsgType#isActual}
+	 * */        
+	private void processActual(String[] messageArray) throws IOException, ConnectionError{
+		String account    = messageArray[1];
+		Integer accountId = Integer.valueOf(messageArray[2]);
+		String symbolStr = messageArray[3];
 		String dateLongString = messageArray[4];
-		
+		String bidStr    = messageArray[5];
+
 		SymbolType symbol = SymbolType.findByStr(symbolStr.replace(".",""));
 		Double bid =Double.valueOf(bidStr);
-		Date date = new Date(Long.valueOf(dateLongString));
-		
-		metaTraderService.setActual(account, symbol, bid, date);
-		
+		Date  date = new Date(Long.valueOf(dateLongString));
+		metaTraderService.setActual(account, accountId, symbol, bid, date);
+
 	}
-	
-	
-	
+
+	// IncomeMsgType|account|accountId|SymbolType|         time|PeriodType|O|H|L|C|V</td></tr>
+	//            04| 123456|       12|    USDCHF|1316087684225|      1440|x|x|x|x|x</td></tr>
+	/**
+	 * {@link IncomeMsgType#isBarUpdate}
+	 * */  
+	private void processBarUpdate(String[] messageArray) throws IOException, ConnectionError{
+		BarDTO bar = new BarDTO();
+		String account   = messageArray[1];
+		Integer accountId = Integer.valueOf(messageArray[2]);
+		bar.setClientId(accountId);
+		
+		SymbolType symbol = SymbolType.findByStr(messageArray[3]);
+		bar.setSymbolId(symbol.getId());
+		bar.setDate(new Date(Long.valueOf(messageArray[4])));
+		PeriodType period = PeriodType.findById(messageArray[5]);
+		bar.setPeriod(period.getId());
+		bar.setOpen(  Double.valueOf(messageArray[6]));
+		bar.setHigh(  Double.valueOf(messageArray[7]));
+		bar.setLow(   Double.valueOf(messageArray[8]));
+		bar.setClose( Double.valueOf(messageArray[9]));
+		bar.setVolume(Integer.valueOf(messageArray[10]));
+
+		metaTraderService.updateBar(account, bar);
+
+	}
+
 	void sendMessage(String msg){
 		try{
 			toClient.write(msg);

@@ -5,6 +5,10 @@ import org.constretto.annotation.Configure;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Environment;
 
+import com.dmma.fxjai.db.entities.Account;
+import com.dmma.fxjai.db.entities.BarD1;
+import com.dmma.fxjai.db.entities.BarMN;
+import com.dmma.fxjai.db.entities.BarW1;
 import com.dmma.fxjai.db.entities.Poc;
 
 
@@ -63,6 +67,10 @@ public class ApplicationConfiguration extends AnnotationConfiguration{
 	
 	private void configureEntities(){
 		this.addAnnotatedClass(Poc.class);
+		this.addAnnotatedClass(Account.class);
+		this.addAnnotatedClass(BarD1.class);
+		this.addAnnotatedClass(BarW1.class);
+		this.addAnnotatedClass(BarMN.class);
 		/*this.addAnnotatedClass(User.class);
 		this.addAnnotatedClass(UserRole.class);
 		this.addAnnotatedClass(BrokerOffice.class);

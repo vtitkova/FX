@@ -11,13 +11,22 @@ public enum OutcomeMsgType {
 	
 	/** <b>Pong</b> message<br>
 	 *  <table>
-	 *  <tr><td>MSG structure:</td><td>msgType|free text</td></tr>
-	 *  <tr><td>MSG example:  </td><td>01|Hello client xxxxx, you sent me 'test text sent to server'</td></tr>
+	 *  <tr><td>MSG structure:</td><td>OutcomeMsgType|pongText</td></tr>
+	 *  <tr><td>MSG example:  </td><td>            01|Hello, you sent me <PING_FREE_TEXT></td></tr>
 	 *  </table>
 	 *  Response is {@link IncomeMsgType#isPing}
 	 */
 	isPong(               1), 
+	
+	/** 
+	 *  <table>
+	 *  <tr><td>MSG structure:</td><td>msgType|accountId</td></tr>
+	 *  <tr><td>MSG example:  </td><td>02     |      112</td></tr>
+	 *  </table>
+	 *  Response is {@link IncomeMsgType#isRegistration}
+	 */
 	isRegistrationStatus( 2),
+	
 	isAuth(               3);
 	
 	private Integer id;

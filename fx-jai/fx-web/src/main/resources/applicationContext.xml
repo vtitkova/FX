@@ -24,13 +24,43 @@
 	<bean id="pocDao"          class="com.dmma.fxjai.db.daos.PocDao">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+	<bean id="accountDao"      class="com.dmma.fxjai.db.daos.AccountDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="barD1Dao"      class="com.dmma.fxjai.db.daos.BarD1Dao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="barW1Dao"      class="com.dmma.fxjai.db.daos.BarW1Dao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="barMNDao"      class="com.dmma.fxjai.db.daos.BarMNDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
 	<!-- end DAOs -->
 
-	<!-- Services -->
+
+	<!-- DBServices -->
+	<bean id="accountDBService"     class="com.dmma.fxjai.db.services.AccountDBService">
+		<property name="accountDao" ref="accountDao"/>
+	</bean>
+	<bean id="barDBService"       class="com.dmma.fxjai.db.services.BarDBService">
+		<property name="barD1Dao" ref="barD1Dao"/>
+		<property name="barW1Dao" ref="barW1Dao"/>
+		<property name="barMNDao" ref="barMNDao"/>
+	</bean>
+	
+	<!-- DBServices -->
+
+
+
+	<!-- Core Services -->
 	<bean id="metaTraderService"         class="com.dmma.fxjai.core.services.MetaTraderService">
 		<property name="pocDao" ref="pocDao"/>
+		<property name="accountDBService" ref="accountDBService"/>
+		<property name="barDBService"     ref="barDBService"/>
 	</bean>
-	<!-- Services -->
+	<!-- Core Services -->
 
 
 	<bean id="connector"  class="com.dmma.fxjai.connector.Connector">

@@ -13,35 +13,44 @@ public enum IncomeMsgType {
 	 * No authentication required. 
 	 * Use this message to test connection to server and response time
 	 *  <table>
-	 *  <tr><td><b>structure:</b></td><td>account|msgType|free text               </td></tr>
-	 *  <tr><td><b>example:  </b></td><td>0123456|01     |test text sent to server</td></tr>
+	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|pingText      </td></tr>
+	 *  <tr><td><b>example:  </b></td><td>           01|some free text</td></tr>
 	 *  </table>
 	 *  Response is {@link OutcomeMsgType#isPong}
 	 */
 	isPing (1), 
+	
 	/** <b>Registration</b> message<br>
 	 *  Client trying to register him self at server.<br>
 	 *  If client already exist, client information will be updated
-	 *  <table>                                       //TODO 
-	 *  <tr><td><b>structure:</b></td><td>account|msgType|accountType|Name    |Surname   |ServerUrl</td></tr>
-	 *  <tr><td><b>example:  </b></td><td>0123456|     02|       DEMO|Dmitrijs|Marcenkovs|ver</td></tr>
+	 *  <table>                                       
+	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|AccountType|Name               |Server </td></tr>
+	 *  <tr><td><b>example:  </b></td><td>           02|  12456|       DEMO|Dmitrijs Marcenkovs|FXOpen </td></tr>
 	 *  </table>
 	 *  Response is {@link OutcomeMsgType#isRegistrationStatus}
 	 * @see  
 	 * Account
 	 */
 	isRegistration (2),
+	
 	/** <b>Actual</b> message<br>
 	 *  The most frequent message from server, contain actual information about currency ASK, BID .<br>
 	 *  If client already exist, client information will be updated
 	 *  <table>                                       //TODO 
-	 *  <tr><td><b>structure:</b></td><td>account|msgType|SYMBOL|BID   |DATE         </td></tr>
-	 *  <tr><td><b>example:  </b></td><td>0123456|     03|USDCHF|1.5773|21.05.02 9:52</td></tr>
+	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType|        time |bid   </td></tr>
+	 *  <tr><td><b>example:  </b></td><td>           03| 123456|       12|    USDCHF|1316087684225|1.5773</td></tr>
 	 *  </table>
 	 * @see  
 	 * Account
 	 */
-	isActual(3);
+	isActual(3),
+	
+	/** <table>
+	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType|         time|PeriodType|O|H|L|C|V</td></tr>
+	 *  <tr><td><b>example:  </b></td><td>           04| 123456|       12|    USDCHF|1316087684225|      1440|x|x|x|x|x</td></tr>
+	 *  </table>
+	 */
+	isBarUpdate(4);
 	
 	private Integer id;
 		
@@ -57,6 +66,18 @@ public enum IncomeMsgType {
 		return id;
 	}
 
+	public static IncomeMsgType findById(Integer id){
+		for(IncomeMsgType type: IncomeMsgType.values()){
+			if(type.getId()==id)
+				return type;
+		}
+		return null;
+	}
+	public static IncomeMsgType findById(String id){
+		return findById(Integer.valueOf(id));
+		
+	}
+	
 	public boolean isEequals(Integer id){
 		return this.id.equals(id);
 	}
