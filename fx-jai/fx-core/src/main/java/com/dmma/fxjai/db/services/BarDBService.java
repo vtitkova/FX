@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dmma.fxjai.core.entities.BarDTO;
 import com.dmma.fxjai.core.types.PeriodType;
+import com.dmma.fxjai.core.types.SymbolType;
 import com.dmma.fxjai.db.daos.BarD1Dao;
 import com.dmma.fxjai.db.daos.BarMNDao;
 import com.dmma.fxjai.db.daos.BarW1Dao;
@@ -45,6 +46,21 @@ public class BarDBService {
 			
 			break;
 		}
+	}
+
+	public BarDTO barDBService(Integer accountId, SymbolType symbol,PeriodType period) {
+		switch (period) {
+		case isMN:
+			
+			break;
+		case isW1:
+			
+			break;
+		case isD1:
+			BarD1Mapper.toDTO(barD1Dao.findLast(accountId, symbol));
+			break;
+		}
+		return null;
 	}
 
 	

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.dmma.fxjai.core.entities.BarDTO;
 import com.dmma.fxjai.core.types.AccountType;
+import com.dmma.fxjai.core.types.PeriodType;
 import com.dmma.fxjai.core.types.SymbolType;
 import com.dmma.fxjai.db.daos.PocDao;
 import com.dmma.fxjai.db.entities.Account;
@@ -50,6 +51,7 @@ public class MetaTraderService {
 		if(acc == null){
 			log.info("New client registration");
 			acc = new Account();
+			acc.setCreated(new Date());
 			acc.setAccount(account);
 			acc.setAccountType(accountType.getId());
 			acc.setUserName(userName);
@@ -57,6 +59,11 @@ public class MetaTraderService {
 			accountDBService.saveOrUpdate(acc);
 		}
 		return acc.getId();
+	}
+
+	
+	public BarDTO getLastBar(String account, Integer accountId,	SymbolType symbol, PeriodType period) {
+		return barDBService.barDBService(accountId,symbol, period);
 	}
 
 

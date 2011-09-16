@@ -14,20 +14,28 @@ public enum OutcomeMsgType {
 	 *  <tr><td>MSG structure:</td><td>OutcomeMsgType|pongText</td></tr>
 	 *  <tr><td>MSG example:  </td><td>            01|Hello, you sent me <PING_FREE_TEXT></td></tr>
 	 *  </table>
-	 *  Response is {@link IncomeMsgType#isPing}
+	 *  Request is {@link IncomeMsgType#isPing}
 	 */
 	isPong(               1), 
 	
 	/** 
 	 *  <table>
-	 *  <tr><td>MSG structure:</td><td>msgType|accountId</td></tr>
-	 *  <tr><td>MSG example:  </td><td>02     |      112</td></tr>
+	 *  <tr><td>MSG structure:</td><td>OutcomeMsgType|accountId</td></tr>
+	 *  <tr><td>MSG example:  </td><td>            02|      112</td></tr>
 	 *  </table>
-	 *  Response is {@link IncomeMsgType#isRegistration}
+	 *  Request is {@link IncomeMsgType#isRegistration}
 	 */
 	isRegistrationStatus( 2),
 	
-	isAuth(               3);
+
+	/** last known bar for this symbol
+	 *  <table>
+	 *  <tr><td>structure:</td><td>OutcomeMsgType|SymbolType| time_MN| time_W1| time_D1|...</td></tr>
+	 *  <tr><td>example:  </td><td>            05|    EURUSD|87684225|87684225|87684225|...</td></tr>
+	 *  </table>
+	 *  This is response to {@link IncomeMsgType#isUpdateRequest} request.
+	 */
+	isUpdateResponce(4);
 	
 	private Integer id;
 		

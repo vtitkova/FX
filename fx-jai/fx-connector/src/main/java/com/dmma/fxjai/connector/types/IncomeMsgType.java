@@ -46,11 +46,20 @@ public enum IncomeMsgType {
 	isActual(3),
 	
 	/** <table>
+	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType</td></tr>
+	 *  <tr><td><b>example:  </b></td><td>           05| 123456|       12|    USDCHF</td></tr>
+	 *  </table>
+	 */
+	isUpdateRequest(4),
+	
+	/** <table>
 	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType|         time|PeriodType|O|H|L|C|V</td></tr>
 	 *  <tr><td><b>example:  </b></td><td>           04| 123456|       12|    USDCHF|1316087684225|      1440|x|x|x|x|x</td></tr>
 	 *  </table>
 	 */
-	isBarUpdate(4);
+	isBarUpdate(5);
+	
+	
 	
 	private Integer id;
 		

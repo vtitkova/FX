@@ -60,6 +60,9 @@ public class ConnectionProcessor implements Runnable{
 			case isActual:
 				processActual(messageArray);
 				break;
+			case isUpdateRequest:
+				processUpdateRequest(messageArray);
+				break;
 			case isBarUpdate:
 				processBarUpdate(messageArray);
 				break;
@@ -145,6 +148,34 @@ public class ConnectionProcessor implements Runnable{
 
 	}
 
+	/** <table>
+	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType</td></tr>
+	 *  <tr><td><b>example:  </b></td><td>           05| 123456|       12|    USDCHF</td></tr>
+	 *  </table>
+	 */
+	private void processUpdateRequest(String[] messageArray) throws IOException, ConnectionError{
+		String account   = messageArray[1];
+		Integer accountId = Integer.valueOf(messageArray[2]);
+		SymbolType symbol = SymbolType.findByStr(messageArray[3]);
+		
+		BarDTO barMN = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN);
+		BarDTO barW1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN);
+		BarDTO barD1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN);
+		
+		StringBuilder response = new StringBuilder();
+		response.append(OutcomeMsgType.isUpdateResponce.getId());
+		response.append(SEPARATOR);
+		response.append(symbol.name());
+		response.append(SEPARATOR);
+		response.append(barMN==null?"0":barMN.getDate().getTime());
+		response.append(SEPARATOR);
+		response.append(barW1==null?"0":barW1.getDate().getTime());
+		response.append(SEPARATOR);
+		response.append(barD1==null?"0":barD1.getDate().getTime());
+		sendMessage(response.toString());
+	}
+		
+	
 	// IncomeMsgType|account|accountId|SymbolType|         time|PeriodType|O|H|L|C|V</td></tr>
 	//            04| 123456|       12|    USDCHF|1316087684225|      1440|x|x|x|x|x</td></tr>
 	/**
@@ -173,7 +204,7 @@ public class ConnectionProcessor implements Runnable{
 
 	void sendMessage(String msg){
 		try{
-			toClient.write(msg);
+			toClient.write(msg+"!");
 			toClient.newLine();
 			System.out.println("server -> client: " + msg);
 		}
