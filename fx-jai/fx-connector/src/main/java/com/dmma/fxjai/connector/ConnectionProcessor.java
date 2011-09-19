@@ -96,7 +96,8 @@ public class ConnectionProcessor implements Runnable{
 		String pingText  = messageArray[1];
 		log.info("Ping from client:" +pingText);
 
-		StringBuilder pongText = new StringBuilder(OutcomeMsgType.isPong.getId());
+		StringBuilder pongText = new StringBuilder();
+		pongText.append(OutcomeMsgType.isPong.getId());
 		pongText.append(SEPARATOR);
 		pongText.append("Hello, you sent me <");
 		pongText.append(pingText);
@@ -123,7 +124,8 @@ public class ConnectionProcessor implements Runnable{
 
 		int accountId = metaTraderService.processRegistration(account, accountType, userName, server);
 
-		StringBuilder response = new StringBuilder(OutcomeMsgType.isRegistrationStatus.getId());
+		StringBuilder response = new StringBuilder();
+		response.append(OutcomeMsgType.isRegistrationStatus.getId());
 		response.append(SEPARATOR);
 		response.append(accountId);
 		sendMessage(response.toString());
@@ -154,7 +156,7 @@ public class ConnectionProcessor implements Runnable{
 	private void processUpdateRequest(String[] messageArray) throws IOException, ConnectionError{
 		String account   = messageArray[1];
 		Integer accountId = Integer.valueOf(messageArray[2]);
-		SymbolType symbol = SymbolType.findByStr(messageArray[3]);
+		SymbolType symbol = SymbolType.findByStr(messageArray[3].replace(".",""));
 		
 		BarDTO barMN = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN);
 		BarDTO barW1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN);
