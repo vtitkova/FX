@@ -156,7 +156,7 @@ public class ConnectionProcessor implements Runnable{
 	private void processUpdateRequest(String[] messageArray) throws IOException, ConnectionError{
 		String account   = messageArray[1];
 		Integer accountId = Integer.valueOf(messageArray[2]);
-		SymbolType symbol = SymbolType.findByStr(messageArray[3]);
+		SymbolType symbol = SymbolType.findByStr(messageArray[3].replace(".",""));
 		
 		BarDTO barMN = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN);
 		BarDTO barW1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN);
