@@ -53,8 +53,8 @@ public enum IncomeMsgType {
 	isUpdateRequest(4),
 	
 	/** <table>
-	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType|         time|PeriodType|O|H|L|C|V</td></tr>
-	 *  <tr><td><b>example:  </b></td><td>           04| 123456|       12|    USDCHF|1316087684225|      1440|x|x|x|x|x</td></tr>
+	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType|PeriodType|         time|O|H|L|C|V</td></tr>
+	 *  <tr><td><b>example:  </b></td><td>           04| 123456|       12|    USDCHF|      1440|1316087684225|x|x|x|x|x</td></tr>
 	 *  </table>
 	 */
 	isBarUpdate(5);

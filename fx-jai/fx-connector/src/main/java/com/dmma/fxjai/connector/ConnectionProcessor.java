@@ -64,7 +64,7 @@ public class ConnectionProcessor implements Runnable{
 				processUpdateRequest(messageArray);
 				break;
 			case isBarUpdate:
-				processBarUpdate(messageArray);
+				processBarUpdate(messageArray, 5);
 				break;
 			}
 
@@ -174,12 +174,12 @@ public class ConnectionProcessor implements Runnable{
 	}
 		
 	
-	// IncomeMsgType|account|accountId|SymbolType|         time|PeriodType|O|H|L|C|V</td></tr>
-	//            04| 123456|       12|    USDCHF|1316087684225|      1440|x|x|x|x|x</td></tr>
+	// IncomeMsgType|account|accountId|SymbolType|PeriodType|         time|O|H|L|C|V</td></tr>
+	//            04| 123456|       12|    USDCHF|      1440|1316087684225|x|x|x|x|x</td></tr>
 	/**
 	 * {@link IncomeMsgType#isBarUpdate}
 	 * */  
-	private void processBarUpdate(String[] messageArray) throws IOException, ConnectionError{
+	private void processBarUpdate(String[] messageArray, int statrPos) throws IOException, ConnectionError{
 		BarDTO bar = new BarDTO();
 		String account   = messageArray[1];
 		Integer accountId = Integer.valueOf(messageArray[2]);
@@ -187,17 +187,18 @@ public class ConnectionProcessor implements Runnable{
 		
 		SymbolType symbol = SymbolType.findByStr(messageArray[3]);
 		bar.setSymbolId(symbol.getId());
-		bar.setDate(new Date(Long.valueOf(messageArray[4])));
-		PeriodType period = PeriodType.findById(messageArray[5]);
+		PeriodType period = PeriodType.findById(messageArray[4]);
 		bar.setPeriod(period.getId());
-		bar.setOpen(  Double.valueOf(messageArray[6]));
-		bar.setHigh(  Double.valueOf(messageArray[7]));
-		bar.setLow(   Double.valueOf(messageArray[8]));
-		bar.setClose( Double.valueOf(messageArray[9]));
-		bar.setVolume(Integer.valueOf(messageArray[10]));
-
+		bar.setDate(new Date(Long.valueOf(messageArray[statrPos])));
+		bar.setOpen(  Double.valueOf(messageArray[statrPos+1]));
+		bar.setHigh(  Double.valueOf(messageArray[statrPos+2]));
+		bar.setLow(   Double.valueOf(messageArray[statrPos+3]));
+		bar.setClose( Double.valueOf(messageArray[statrPos+4]));
+		bar.setVolume(Integer.valueOf(messageArray[statrPos+5]));
 		metaTraderService.updateBar(account, bar);
-
+		if(messageArray.length > statrPos+5){
+			processBarUpdate(messageArray, statrPos+6 );
+		}
 	}
 
 	void sendMessage(String msg){
