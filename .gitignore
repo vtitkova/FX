@@ -5,9 +5,5 @@ target
 .metadata
 .project
 .settings
-fx-jai/fx-core/src/main/resources/fx.properties
-fx-jai/fx-web/war/WEB-INF/classes
-fx-jai/fx-web/war/WEB-INF/deploy
-fx-jai/fx-web/war/WEB-INF/lib
-fx-jai/fx-web/war/Poc
+fx-jai/fx-web/src/main/resources/fx.properties
 

@@ -1,16 +1,16 @@
-package com.dmma.fxjai.core.types;
+package com.dmma.fxjai.shared.types;
 
 
 public enum PeriodType {
-	isM1(    1, "1"),
-	isM5(    5, "5"),
-	isM15(  15, "15"),
-	isM30(  30, "30"),
-	isH1(   60, "1"),
-	isH4(  240, "4"),
-	isD1( 1440, "1"),
-	isW1(10080, "1"),
-	isMN(43200, "1");
+	isM1(    1, "M1"),
+	isM5(    5, "M5"),
+	isM15(  15, "M15"),
+	isM30(  30, "M30"),
+	isH1(   60, "H1"),
+	isH4(  240, "H4"),
+	isD1( 1440, "D1"),
+	isW1(10080, "W1"),
+	isMN1(43200, "MN1");
 	
 	private int    id;
 	private String name;
@@ -38,7 +38,7 @@ public enum PeriodType {
 	
 	public static PeriodType findById(Integer id){
 		for(PeriodType type: PeriodType.values()){
-			if(type.getId()==id)
+			if(type.getId().equals(id))
 				return type;
 		}
 		return null;

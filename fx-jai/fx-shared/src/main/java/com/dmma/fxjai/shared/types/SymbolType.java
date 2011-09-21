@@ -1,8 +1,8 @@
-package com.dmma.fxjai.core.types;
+package com.dmma.fxjai.shared.types;
 
 public enum SymbolType{
-	GBPUSD(1),
-	EURUSD(2),
+	EURUSD(1),
+	GBPUSD(2),
 	USDJPY(3),
 	USDCHF(4),
 	USDCAD(5),

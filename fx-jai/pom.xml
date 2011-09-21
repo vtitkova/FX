@@ -24,6 +24,8 @@
 	</repositories>
 	
 	<modules>
+		<module>fx-shared</module>
+		<module>fx-db</module>
 		<module>fx-core</module>
 		<module>fx-connector</module>
 		<module>fx-connector-client</module>

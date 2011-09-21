@@ -10,14 +10,13 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 
-import com.dmma.fxjai.connector.errors.ConnectionError;
 import com.dmma.fxjai.connector.types.IncomeMsgType;
 import com.dmma.fxjai.connector.types.OutcomeMsgType;
-import com.dmma.fxjai.core.entities.BarDTO;
 import com.dmma.fxjai.core.services.MetaTraderService;
-import com.dmma.fxjai.core.types.AccountType;
-import com.dmma.fxjai.core.types.PeriodType;
-import com.dmma.fxjai.core.types.SymbolType;
+import com.dmma.fxjai.shared.dto.BarDTO;
+import com.dmma.fxjai.shared.types.AccountType;
+import com.dmma.fxjai.shared.types.PeriodType;
+import com.dmma.fxjai.shared.types.SymbolType;
 
 public class ConnectionProcessor implements Runnable{
 	public static final String SEPARATOR = ";";
@@ -42,44 +41,48 @@ public class ConnectionProcessor implements Runnable{
 		try {
 			toClient   = new BufferedWriter(new OutputStreamWriter(fromClientSocket.getOutputStream()));
 			fromClient = new BufferedReader(new InputStreamReader(fromClientSocket.getInputStream()));
-
+			// 4;293165;1;EURUSD.;43200;978307200;0.9421;0.9599;0.9113;0.9379;4931
 			// any message from client starts with client account id
-			String msgFromClient   = fromClient.readLine();	
-
+			String msgFromClient   = fromClient.readLine();
+			String msgToClient = "";
+			
 			String messageArray[] = msgFromClient.split(SEPARATOR);
 			String msgTypeStr     = messageArray[0];
 
 			IncomeMsgType msgType = IncomeMsgType.findById(msgTypeStr);
-			switch (msgType) {
-			case isPing:
-				processPing(messageArray);
-				break;
-			case isRegistration:
-				processRegistration(messageArray);
-				break;
-			case isActual:
-				processActual(messageArray);
-				break;
-			case isUpdateRequest:
-				processUpdateRequest(messageArray);
-				break;
-			case isBarUpdate:
-				processBarUpdate(messageArray, 5);
-				break;
+			if(msgType != null){
+				switch (msgType) {
+				case isPing:
+					msgToClient = processPing(messageArray);
+					break;
+				case isRegistration:
+					msgToClient = processRegistration(messageArray);
+					break;
+				case isLastBarRequest:
+					msgToClient = processLastBarRequest(messageArray);
+					break;
+				case isBarUpdate:
+					msgToClient = processBarUpdate(messageArray);
+					break;
+				case isActual:
+					msgToClient = processActual(messageArray);
+					break;
+				}
 			}
+
+			
+			toClient.write(msgToClient+"!");
+			toClient.newLine();
+			toClient.flush();
+			System.out.println("server->client: " + msgToClient);
 
 			this.connectorStatus.connectionProcessSucceed();
 		}catch (IOException e) {
 			this.connectorStatus.connectionProcessFailed();
 			log.error("Connection failed ...");
 			e.printStackTrace();
-		}catch (ConnectionError e) {
-			this.connectorStatus.connectionProcessRejected();
-			log.warn("Connection rejected - account: " + e.getLogin() + ", reason: "+e.getReason());
-			sendMessage("Connection rejected - account: " + e.getLogin() + ", reason: "+e.getReason());
 		}finally{
 			try{
-				toClient.flush();
 				fromClient.close();
 				toClient.close();
 				fromClientSocket.close();
@@ -92,29 +95,23 @@ public class ConnectionProcessor implements Runnable{
 	/**
 	 * {@link IncomeMsgType#isPing}
 	 * */  
-	private void processPing(String[] messageArray) throws IOException {
+	private String processPing(String[] messageArray) throws IOException {
 		String pingText  = messageArray[1];
 		log.info("Ping from client:" +pingText);
 
-		StringBuilder pongText = new StringBuilder();
-		pongText.append(OutcomeMsgType.isPong.getId());
-		pongText.append(SEPARATOR);
-		pongText.append("Hello, you sent me <");
-		pongText.append(pingText);
-		pongText.append(">");
-
-		//out = "1111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000";
-		//out += "1111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000";
-		//out += "1111111111222222222233333333334444444444555555555566666666667777777777888888888899999999990000000000";
-
-		sendMessage(pongText.toString());
-		sendMessage("hehe");
+		StringBuilder response = new StringBuilder();
+		response.append(OutcomeMsgType.isPong.getId());
+		response.append(SEPARATOR);
+		response.append("Hello, you sent me <");
+		response.append(pingText);
+		response.append(">");
+		return response.toString();
 	}
 
 	/**
 	 * {@link IncomeMsgType#isRegistration}
 	 * */  
-	private void processRegistration(String[] messageArray) throws IOException, ConnectionError {
+	private String processRegistration(String[] messageArray) throws IOException {
 		String account  = messageArray[1];
 		String type     = messageArray[2];
 		String userName = messageArray[3];
@@ -128,82 +125,104 @@ public class ConnectionProcessor implements Runnable{
 		response.append(OutcomeMsgType.isRegistrationStatus.getId());
 		response.append(SEPARATOR);
 		response.append(accountId);
-		sendMessage(response.toString());
+		return response.toString();  
 	}
 
 	/**
 	 * {@link IncomeMsgType#isActual}
 	 * */        
-	private void processActual(String[] messageArray) throws IOException, ConnectionError{
+	private String processActual(String[] messageArray) throws IOException{
 		String account    = messageArray[1];
 		Integer accountId = Integer.valueOf(messageArray[2]);
 		String symbolStr = messageArray[3];
-		String dateLongString = messageArray[4];
-		String bidStr    = messageArray[5];
+		String dateLongString = messageArray[4].trim();
+		String bidStr    = messageArray[5].trim();
 
 		SymbolType symbol = SymbolType.findByStr(symbolStr.replace(".",""));
 		Double bid =Double.valueOf(bidStr);
 		Date  date = new Date(Long.valueOf(dateLongString));
 		metaTraderService.setActual(account, accountId, symbol, bid, date);
-
+		return "";
 	}
 
 	/** <table>
 	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType</td></tr>
-	 *  <tr><td><b>example:  </b></td><td>           05| 123456|       12|    USDCHF</td></tr>
+	 *  <tr><td><b>example:  </b></td><td>           03| 123456|       12|    USDCHF</td></tr>
 	 *  </table>
 	 */
-	private void processUpdateRequest(String[] messageArray) throws IOException, ConnectionError{
-		String account   = messageArray[1];
-		Integer accountId = Integer.valueOf(messageArray[2]);
-		SymbolType symbol = SymbolType.findByStr(messageArray[3].replace(".",""));
-		
-		BarDTO barMN = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN);
-		BarDTO barW1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN);
-		BarDTO barD1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN);
-		
+	private String processLastBarRequest(String[] messageArray) throws IOException{
+		String account   = messageArray[1].trim();
+		Integer accountId = Integer.valueOf(messageArray[2].trim());
+		SymbolType symbol = SymbolType.findByStr(messageArray[3].replace(".","").trim());
+
+		BarDTO barMN = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN1);
+		BarDTO barW1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isW1);
+		BarDTO barD1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isD1);
+
 		StringBuilder response = new StringBuilder();
-		response.append(OutcomeMsgType.isUpdateResponce.getId());
+		response.append(OutcomeMsgType.isLastBarResponce.getId());
 		response.append(SEPARATOR);
 		response.append(symbol.name());
 		response.append(SEPARATOR);
-		response.append(barMN==null?"0":barMN.getDate().getTime());
+		response.append(barMN==null?"0":barMN.getOpenDateTime());
 		response.append(SEPARATOR);
-		response.append(barW1==null?"0":barW1.getDate().getTime());
+		response.append(barW1==null?"0":barW1.getOpenDateTime());
 		response.append(SEPARATOR);
-		response.append(barD1==null?"0":barD1.getDate().getTime());
-		sendMessage(response.toString());
+		response.append(barD1==null?"0":barD1.getOpenDateTime());
+		return response.toString();
 	}
-		
-	
+
+
 	// IncomeMsgType|account|accountId|SymbolType|PeriodType|         time|O|H|L|C|V</td></tr>
 	//            04| 123456|       12|    USDCHF|      1440|1316087684225|x|x|x|x|x</td></tr>
 	/**
 	 * {@link IncomeMsgType#isBarUpdate}
 	 * */  
-	private void processBarUpdate(String[] messageArray, int statrPos) throws IOException, ConnectionError{
-		BarDTO bar = new BarDTO();
-		String account   = messageArray[1];
-		Integer accountId = Integer.valueOf(messageArray[2]);
-		bar.setClientId(accountId);
+	private String processBarUpdate(String[] messageArray) throws IOException{
+		String account    = messageArray[1].trim();
+		Integer accountId = Integer.valueOf(messageArray[2].trim());
+		SymbolType symbol = SymbolType.findByStr(messageArray[3].replace(".","").trim());
+		PeriodType period = PeriodType.findById(messageArray[4].trim());
+
 		
-		SymbolType symbol = SymbolType.findByStr(messageArray[3]);
-		bar.setSymbolId(symbol.getId());
-		PeriodType period = PeriodType.findById(messageArray[4]);
-		bar.setPeriod(period.getId());
-		bar.setDate(new Date(Long.valueOf(messageArray[statrPos])));
-		bar.setOpen(  Double.valueOf(messageArray[statrPos+1]));
-		bar.setHigh(  Double.valueOf(messageArray[statrPos+2]));
-		bar.setLow(   Double.valueOf(messageArray[statrPos+3]));
-		bar.setClose( Double.valueOf(messageArray[statrPos+4]));
-		bar.setVolume(Integer.valueOf(messageArray[statrPos+5]));
-		metaTraderService.updateBar(account, bar);
-		if(messageArray.length > statrPos+5){
-			processBarUpdate(messageArray, statrPos+6 );
+		boolean haveNext = true;
+		int barValuesPos = 5;
+		while(haveNext){
+			BarDTO bar = new BarDTO();
+			bar.setClientId(accountId);
+			bar.setSymbolId(symbol.getId());
+			bar.setPeriod(period.getId());
+			
+			Integer openDateTime = Integer.valueOf(messageArray[barValuesPos].trim());
+			// Date date = new Date(dateTime); //the number of seconds lapsed since 00:00 of the 1st of January 1970.
+			bar.setOpenDateTime(openDateTime);
+			bar.setOpen(  Double.valueOf(messageArray[barValuesPos+1].trim()));
+			bar.setHigh(  Double.valueOf(messageArray[barValuesPos+2].trim()));
+			bar.setLow(   Double.valueOf(messageArray[barValuesPos+3].trim()));
+			bar.setClose( Double.valueOf(messageArray[barValuesPos+4].trim()));
+			bar.setVolume(Integer.valueOf(messageArray[barValuesPos+5].trim()));
+			metaTraderService.updateBar(account, bar);
+			System.out.println(barValuesPos+"-"+bar.getVolume());
+			barValuesPos = barValuesPos + 6;
+			if(messageArray.length < barValuesPos+6)
+				haveNext = false;
+			
 		}
+		
+		
+		
+		
+		StringBuilder response = new StringBuilder();
+		response.append(OutcomeMsgType.isBarUpdateResponse.getId());
+		return response.toString();
+
+		/*if(messageArray.length > statrPos+5){
+			processBarUpdate(messageArray, statrPos+6 );
+		}*/
+
 	}
 
-	void sendMessage(String msg){
+	/*void sendMessage(String msg){
 		try{
 			toClient.write(msg+"!");
 			toClient.newLine();
@@ -212,6 +231,6 @@ public class ConnectionProcessor implements Runnable{
 		catch(IOException ioException){
 			ioException.printStackTrace();
 		}
-	}
+	}*/
 
 }

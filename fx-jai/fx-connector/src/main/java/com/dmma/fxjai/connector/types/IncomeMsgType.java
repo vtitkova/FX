@@ -33,31 +33,31 @@ public enum IncomeMsgType {
 	 */
 	isRegistration (2),
 	
-	/** <b>Actual</b> message<br>
-	 *  The most frequent message from server, contain actual information about currency ASK, BID .<br>
-	 *  If client already exist, client information will be updated
-	 *  <table>                                       //TODO 
-	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType|        time |bid   </td></tr>
-	 *  <tr><td><b>example:  </b></td><td>           03| 123456|       12|    USDCHF|1316087684225|1.5773</td></tr>
-	 *  </table>
-	 * @see  
-	 * Account
-	 */
-	isActual(3),
-	
 	/** <table>
 	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType</td></tr>
-	 *  <tr><td><b>example:  </b></td><td>           05| 123456|       12|    USDCHF</td></tr>
+	 *  <tr><td><b>example:  </b></td><td>           03| 123456|       12|    USDCHF</td></tr>
 	 *  </table>
 	 */
-	isUpdateRequest(4),
+	isLastBarRequest(3),
 	
 	/** <table>
 	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType|PeriodType|         time|O|H|L|C|V</td></tr>
 	 *  <tr><td><b>example:  </b></td><td>           04| 123456|       12|    USDCHF|      1440|1316087684225|x|x|x|x|x</td></tr>
 	 *  </table>
 	 */
-	isBarUpdate(5);
+	isBarUpdate(4),
+	
+	/** <b>Actual</b> message<br>
+	 *  The most frequent message from server, contain actual information about currency ASK, BID .<br>
+	 *  If client already exist, client information will be updated
+	 *  <table>                                       //TODO 
+	 *  <tr><td><b>structure:</b></td><td>IncomeMsgType|account|accountId|SymbolType|        time |bid   </td></tr>
+	 *  <tr><td><b>example:  </b></td><td>           05| 123456|       12|    USDCHF|1316087684225|1.5773</td></tr>
+	 *  </table>
+	 * @see  
+	 * Account
+	 */
+	isActual(5);
 	
 	
 	
@@ -84,7 +84,6 @@ public enum IncomeMsgType {
 	}
 	public static IncomeMsgType findById(String id){
 		return findById(Integer.valueOf(id));
-		
 	}
 	
 	public boolean isEequals(Integer id){

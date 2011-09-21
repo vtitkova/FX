@@ -31,11 +31,20 @@ public enum OutcomeMsgType {
 	/** last known bar for this symbol
 	 *  <table>
 	 *  <tr><td>structure:</td><td>OutcomeMsgType|SymbolType| time_MN| time_W1| time_D1|...</td></tr>
-	 *  <tr><td>example:  </td><td>            05|    EURUSD|87684225|87684225|87684225|...</td></tr>
+	 *  <tr><td>example:  </td><td>            03|    EURUSD|87684225|87684225|87684225|...</td></tr>
 	 *  </table>
-	 *  This is response to {@link IncomeMsgType#isUpdateRequest} request.
+	 *  This is response to {@link IncomeMsgType#isLastBarRequest} request.
 	 */
-	isUpdateResponce(4);
+	isLastBarResponce(3),
+	
+	/** inform client that bar was updated 
+	 *  <table>
+	 *  <tr><td>structure:</td><td>OutcomeMsgType</td></tr>
+	 *  <tr><td>example:  </td><td>            04</td></tr>
+	 *  </table>
+	 *  This is response to {@link IncomeMsgType#isBarUpdate} request.
+	 */
+	isBarUpdateResponse(4);
 	
 	private Integer id;
 		

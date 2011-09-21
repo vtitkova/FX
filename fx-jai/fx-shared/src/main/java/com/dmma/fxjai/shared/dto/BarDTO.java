@@ -1,13 +1,12 @@
-package com.dmma.fxjai.core.entities;
+package com.dmma.fxjai.shared.dto;
 
-import java.util.Date;
 
 public class BarDTO {
 	private Long    id;
 	private Integer clientId;
 	private Integer symbolId;
+	private Integer openDateTime;
 	private Integer period;
-	private Date    date;
 	private Double  open;
 	private Double  high;
 	private Double  low;
@@ -49,14 +48,6 @@ public class BarDTO {
 		this.period = period;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
 	public Double getOpen() {
 		return open;
 	}
@@ -95,6 +86,14 @@ public class BarDTO {
 
 	public void setVolume(Integer volume) {
 		this.volume = volume;
+	}
+
+	public Integer getOpenDateTime() {
+		return openDateTime;
+	}
+
+	public void setOpenDateTime(Integer openDateTime) {
+		this.openDateTime = openDateTime;
 	}
 	
 	

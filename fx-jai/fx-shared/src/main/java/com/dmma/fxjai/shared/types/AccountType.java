@@ -1,4 +1,4 @@
-package com.dmma.fxjai.core.types;
+package com.dmma.fxjai.shared.types;
 
 public enum AccountType{
 	isDemo( 3, "DEMO"),

@@ -19,6 +19,11 @@
 		<!-- ***************************** PARRENT MODULES ***************************** -->
 		<dependency>
             <groupId>${pom.parent.groupId}</groupId>
+            <artifactId>fx-shared</artifactId>
+            <version>${pom.parent.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>${pom.parent.groupId}</groupId>
             <artifactId>fx-core</artifactId>
             <version>${pom.parent.version}</version>
         </dependency>
@@ -62,16 +67,16 @@
 	</dependencies>
 	
 	<build>
-		<outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<finalName>FX</finalName>
 		<plugins>
-			<plugin>
+			<!-- ***************************** Configure GWT plugin  - use $mnv gwt:run ***************************** -->
+            <plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>${gwtplugin.version}</version>
 				<configuration>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<hostedWebapp>war</hostedWebapp>
+					<!-- hostedWebapp>war</hostedWebapp -->
 					<modules>
 						<module>com.dmma.fxjai.web.gwt.poc.Poc</module>
 					</modules>
@@ -87,28 +92,28 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1.1</version>
-				<configuration>
-					<warSourceDirectory>war</warSourceDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <configuration>
-                    <filesets>
-                        <fileset><directory>logs</directory></fileset>
-						<fileset><directory>../logs</directory></fileset>
-						<fileset><directory>.gwt</directory></fileset>
-						<fileset><directory>war/Poc</directory></fileset>
-                       	<fileset><directory>war/WEB-INF/deploy</directory></fileset> 
-						<fileset><directory>war/WEB-INF/classes</directory></fileset> 
-						<fileset><directory>war/WEB-INF/lib</directory></fileset>							
-                    </filesets>
-                </configuration>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.5</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/${project.build.finalName}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/webapp</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
-			<plugin>
+            <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
@@ -119,7 +124,7 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/war/WEB-INF/lib/</outputDirectory>
+							<outputDirectory>${basedir}/target/${project.build.finalName}/WEB-INF/lib/</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>false</overWriteSnapshots>
 							<overWriteIfNewer>true</overWriteIfNewer>
@@ -128,6 +133,15 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<warSourceDirectory>webapp</warSourceDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
