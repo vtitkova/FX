@@ -24,6 +24,9 @@
 	</repositories>
 	
 	<modules>
+		<module>dmma-base-shared</module>
+		<module>dmma-base-app</module>
+		<module>dmma-base-gwt</module>
 		<module>fx-shared</module>
 		<module>fx-db</module>
 		<module>fx-core</module>

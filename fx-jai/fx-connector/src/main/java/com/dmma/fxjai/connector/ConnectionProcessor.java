@@ -13,10 +13,10 @@ import org.slf4j.Logger;
 import com.dmma.fxjai.connector.types.IncomeMsgType;
 import com.dmma.fxjai.connector.types.OutcomeMsgType;
 import com.dmma.fxjai.core.services.MetaTraderService;
-import com.dmma.fxjai.shared.dto.BarDTO;
-import com.dmma.fxjai.shared.types.AccountType;
-import com.dmma.fxjai.shared.types.PeriodType;
-import com.dmma.fxjai.shared.types.SymbolType;
+import com.dmma.fxjai.shared.shared.dto.BarDTO;
+import com.dmma.fxjai.shared.shared.types.AccountType;
+import com.dmma.fxjai.shared.shared.types.PeriodType;
+import com.dmma.fxjai.shared.shared.types.SymbolType;
 
 public class ConnectionProcessor implements Runnable{
 	public static final String SEPARATOR = ";";
@@ -155,9 +155,9 @@ public class ConnectionProcessor implements Runnable{
 		Integer accountId = Integer.valueOf(messageArray[2].trim());
 		SymbolType symbol = SymbolType.findByStr(messageArray[3].replace(".","").trim());
 
-		BarDTO barMN = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isMN1);
-		BarDTO barW1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isW1);
-		BarDTO barD1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.isD1);
+		BarDTO barMN = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.MN1);
+		BarDTO barW1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.W1);
+		BarDTO barD1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.D1);
 
 		StringBuilder response = new StringBuilder();
 		response.append(OutcomeMsgType.isLastBarResponce.getId());
@@ -189,10 +189,6 @@ public class ConnectionProcessor implements Runnable{
 		int barValuesPos = 5;
 		while(haveNext){
 			BarDTO bar = new BarDTO();
-			bar.setClientId(accountId);
-			bar.setSymbolId(symbol.getId());
-			bar.setPeriod(period.getId());
-			
 			Integer openDateTime = Integer.valueOf(messageArray[barValuesPos].trim());
 			// Date date = new Date(dateTime); //the number of seconds lapsed since 00:00 of the 1st of January 1970.
 			bar.setOpenDateTime(openDateTime);
@@ -201,7 +197,7 @@ public class ConnectionProcessor implements Runnable{
 			bar.setLow(   Double.valueOf(messageArray[barValuesPos+3].trim()));
 			bar.setClose( Double.valueOf(messageArray[barValuesPos+4].trim()));
 			bar.setVolume(Integer.valueOf(messageArray[barValuesPos+5].trim()));
-			metaTraderService.updateBar(account, bar);
+			metaTraderService.updateBar(accountId, symbol, period, bar);
 			System.out.println(barValuesPos+"-"+bar.getVolume());
 			barValuesPos = barValuesPos + 6;
 			if(messageArray.length < barValuesPos+6)

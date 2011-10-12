@@ -1,0 +1,51 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field="img" type="com.dmma.base.gwt.client.resources.img.BaseImages" />
+
+	<ui:style field="style" type="com.dmma.base.gwt.client.ui.pager.SimplePagerPanel3Css" >
+		.pager{
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.pointer {
+			cursor: pointer;
+		}
+		
+		.controlsText {
+			font-family: sans-serif;
+			font-size: 12px;
+			font-style: normal;
+			text-align: center;
+		}
+	</ui:style>
+
+
+
+	<g:HTMLPanel>
+		<table class="{style.pager}">
+			<tr>
+				<td>
+					<g:Image ui:field="leftFast" resource="{img.leftFastDisabled}" />
+				</td>
+				<td>
+					<g:Image ui:field="left" resource="{img.leftDisabled}" />
+				</td>
+				<td>
+					<g:FlexTable ui:field="pageTable" />
+				</td>
+				<td>
+					<g:Image ui:field="right" resource="{img.rightDisabled}" />
+				</td>
+				<td>
+					<g:Image ui:field="rightFast" resource="{img.rightFastDisabled}" />
+				</td>
+				<td class="{style.controlsText}">Items on page</td>
+				<td>
+					<g:ListBox ui:field="itemsOnScreenLB" />
+				</td>
+
+			</tr>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder>

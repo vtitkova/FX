@@ -23,6 +23,42 @@
 	
 	<!-- Base Servlets -->
 	<servlet>
+		<servlet-name>clientContextGWTServlet</servlet-name>
+		<servlet-class>com.dmma.base.gwt.server.services.ClientContextGWTServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>clientContextGWTServlet</servlet-name>
+		<url-pattern>/Admin/ClientContextGWTService</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>mailGWTServlet</servlet-name>
+		<servlet-class>com.dmma.base.gwt.server.services.MailGWTServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mailGWTServlet</servlet-name>
+		<url-pattern>/Admin/MailGWTService</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>accountGWTServlet</servlet-name>
+		<servlet-class>com.dmma.fxjai.web.gwt.core.server.services.AccountGWTServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>accountGWTServlet</servlet-name>
+		<url-pattern>/Admin/AccountGWTService</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>barGWTServlet</servlet-name>
+		<servlet-class>com.dmma.fxjai.web.gwt.core.server.services.BarGWTServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>barGWTServlet</servlet-name>
+		<url-pattern>/Admin/BarGWTService</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
 		<servlet-name>pocGWTServlet</servlet-name>
 		<servlet-class>com.dmma.fxjai.web.gwt.poc.server.services.PocGWTServiceImpl</servlet-class>
 	</servlet>
@@ -30,4 +66,6 @@
 		<servlet-name>pocGWTServlet</servlet-name>
 		<url-pattern>/Poc/PocGWTService</url-pattern>
 	</servlet-mapping>
+	
+	
 </web-app>

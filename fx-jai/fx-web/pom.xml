@@ -19,6 +19,21 @@
 		<!-- ***************************** PARRENT MODULES ***************************** -->
 		<dependency>
             <groupId>${pom.parent.groupId}</groupId>
+            <artifactId>dmma-base-shared</artifactId>
+            <version>${pom.parent.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>${pom.parent.groupId}</groupId>
+            <artifactId>dmma-base-app</artifactId>
+            <version>${pom.parent.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>${pom.parent.groupId}</groupId>
+            <artifactId>dmma-base-gwt</artifactId>
+            <version>${pom.parent.version}</version>
+        </dependency>
+		<dependency>
+            <groupId>${pom.parent.groupId}</groupId>
             <artifactId>fx-shared</artifactId>
             <version>${pom.parent.version}</version>
         </dependency>
@@ -78,9 +93,9 @@
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
 					<!-- hostedWebapp>war</hostedWebapp -->
 					<modules>
-						<module>com.dmma.fxjai.web.gwt.poc.Poc</module>
+						<module>com.dmma.fxjai.web.gwt.admin.Admin</module>
 					</modules>
-					<runTarget>Poc.html</runTarget>
+					<runTarget>Fxjai.html</runTarget>
 				</configuration>
 				<executions>
 					<execution>
@@ -128,7 +143,7 @@
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>false</overWriteSnapshots>
 							<overWriteIfNewer>true</overWriteIfNewer>
-							<excludeArtifactIds>gwt-user, gwt-dev, gwt-servlet</excludeArtifactIds>
+							<excludeArtifactIds>gwt-user, gwt-dev, gwt-servlet, dmma-base-app, dmma-base-gwt</excludeArtifactIds>
 							<excludeGroupIds>${pom.parent.groupId}</excludeGroupIds>
 						</configuration>
 					</execution>

@@ -1,0 +1,38 @@
+.mapMainContentTable {
+	width: 100%;
+}
+
+.menuPanelHolder{
+	vertical-align: top;	
+}
+
+.workAreaPanelHolder{
+	vertical-align: top;	
+}
+
+.workAreaPanel{
+	margin-left: 5px; 
+}
+
+.presenterView{
+}
+
+.presenterTable{
+	border: 1px solid #BBBBBB;
+	width: 100%;
+}
+
+.presenterTableTH{
+	background: url("img/hborder.png") repeat-x scroll 0 -989px #D3DEF6;
+	border-bottom: 1px solid #BBBBBB;
+	height: 30px;
+	
+}
+
+.captionHT{
+	margin-left: 10px;
+	color      : black;
+    font-weight: bold;
+    text-align : left;
+	text-shadow: 0 2px 2px #FFFFFF;
+}

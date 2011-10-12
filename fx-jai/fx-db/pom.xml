@@ -18,6 +18,11 @@
 	<dependencies>
 		<!-- ***************************** PARRENT MODULES ***************************** -->
 		<dependency>
+            <groupId>${pom.parent.groupId}</groupId>
+            <artifactId>dmma-base-app</artifactId>
+            <version>${pom.parent.version}</version>
+        </dependency>
+		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>fx-shared</artifactId>
 			<version>${project.parent.version}</version>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC 
+  	"-//Google Inc.//DTD Google Web Toolkit 2.0.3//EN" 
+    "http://google-web-toolkit.googlecode.com/svn/tags/2.0.3/distro-source/core/src/gwt-module.dtd">
+<module rename-to='Admin'>
+	<inherits name='com.dmma.fxjai.web.gwt.core.Core' />
+	
+	<entry-point class='com.dmma.fxjai.web.gwt.admin.client.AdminEP' />
+	<source path='client' />
+	<source path='shared' />
+
+</module>

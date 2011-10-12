@@ -1,0 +1,85 @@
+.dialogImage {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.dialogVPanel {
+	margin: 5px;
+}
+
+
+/* loading popup */
+.baseLoadingPopup {
+	border: 1px solid #CCCCCC;
+}
+
+.baseLoadingImage {
+	vertical-align: middle;
+	padding: 10px;
+}
+
+.baseLoadingCaption {
+	width: 100px;
+	color: #444444;
+	font: bold 13px tahoma, arial, helvetica;
+}
+
+.baseLoadingMsg{
+	color: #444444;
+	font: 10px arial, tahoma, sans-serif;
+}
+
+
+/* centered element*/
+.autoMargin{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/** Table rendering **/
+.tableHeaderRow {
+	background: url("img/tableHeader.png") repeat-x scroll 0 0 #F8F8F8 !important;
+	font-weight: bold;
+	height: 30px;
+	color: #666666;
+	text-align: center;
+}
+
+.tableZebraRow {
+	background: none repeat scroll 0 0 #F0F0F0;
+}
+
+.tableHooverRow {
+	background: none repeat scroll 0 0 #FFFFCC;
+}
+
+.hasBorderLeft{
+	border-left-style: solid;
+	border-left-width: 1px;
+}
+.hasBorderBottom{
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+}
+
+.borderColor{
+	border-color: #CCCCCC;
+}
+
+
+.drawTableBorders{
+	border-collapse: collapse;
+}
+.drawTableBorders td{
+	border: 1px solid #DADADA;
+	padding-left: 5px;
+}
+
+.drawTableBorders .noBorderTopRow td{
+	border-top: none;
+}
+		
+
+.actionWrap{
+	cursor: pointer;	
+}

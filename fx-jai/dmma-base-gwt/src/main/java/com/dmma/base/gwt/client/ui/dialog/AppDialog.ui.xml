@@ -1,0 +1,10 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui' >
+	<ui:with field='cssRes' type='com.dmma.base.gwt.client.resources.css.BaseCssResource'/>
+	
+	
+	
+<g:HTMLPanel >
+	
+</g:HTMLPanel>
+</ui:UiBinder>

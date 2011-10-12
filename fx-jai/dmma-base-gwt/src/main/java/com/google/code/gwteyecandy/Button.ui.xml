@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder 
+	xmlns:ui="urn:ui:com.google.gwt.uibinder" 
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	
+	<ui:with field='res' type='com.google.code.gwteyecandy.resources.ButtonResources'/>
+	
+	<g:HTMLPanel styleName="{res.style.btn} {res.style.enabled} {res.style.aa}">
+		<div class="{res.style.outer}">
+			<div class="{res.style.border}"></div>
+			<div class="{res.style.inner}">
+				<div ui:field="gradient" class="{res.style.upper}">&nbsp;</div>
+				<div ui:field="content" class="{res.style.filler}">
+					<span ui:field="textElement"></span>
+				</div>
+			</div>
+			<div class="{res.style.border}"></div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

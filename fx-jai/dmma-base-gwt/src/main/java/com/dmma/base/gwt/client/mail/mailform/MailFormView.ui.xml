@@ -1,0 +1,46 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:myRTE='urn:import:com.dmma.base.gwt.client.ui.rte'>
+
+	<ui:with field='msg' type='com.dmma.base.gwt.client.resources.i18n.BaseMessages' />
+
+	<g:HTMLPanel>
+		<table>
+			<tr>
+				<td>Template:</td>
+				<td>
+					<g:ListBox ui:field="template" />
+				</td>
+			</tr>
+			<tr>
+				<td>Mail to:</td>
+				<td>
+					<g:TextBox ui:field="mailTo" width="99%" text="dmitrijs.marcenkovs@inbox.lv" />
+				</td>
+			</tr>
+			<tr>
+				<td>Subject:</td>
+				<td>
+					<g:TextBox ui:field="subject" width="99%" />
+				</td>
+			</tr>
+			<tr>
+				<td>Body</td>
+				<td>
+					<myRTE:RichTextEditor ui:field="bodyRT" />
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<g:CheckBox value="true" ui:field="makeLog">Create log in DB</g:CheckBox>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<g:Button ui:field="sendButton" text="Send" />
+				</td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder>

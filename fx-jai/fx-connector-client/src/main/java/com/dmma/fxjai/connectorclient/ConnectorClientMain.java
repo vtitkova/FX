@@ -11,10 +11,18 @@ import java.net.Socket;
 public class ConnectorClientMain{
 		
 	public static void main(String[] args) {
+		//D1( 1440,   "D1"),
+		//W1(10080,   "W1"),
+		//MN1(43200, "MN1");
 		
-//		String msgToSend = "1;hi";                   1316 603 432 624
-		String msgToSend = "4;293165;1;EURUSD.;43200;978307200;0.9421;0.9599;0.9113;0.9379;4930";
-	/*	msgToSend+=";978307201;0.9421;0.9599;0.9113;0.9379;4931";
+		//String msgToSend = "1;hi";     //              1316 603 432 624
+		//String msgToSend = "4;293165;1;EURUSD.;43200;978307200;1.1;0.9599;0.9113;0.9379;4930"; // update MN1 978307200
+		String msgToSend = "4;293165;1;EURUSD.;10080;978307200;1.1;0.9599;0.9113;0.9379;4930"; // update W1 978307200
+		
+		//String msgToSend = "03;293165;1;EURUSD.";
+		
+		
+		/*	msgToSend+=";978307201;0.9421;0.9599;0.9113;0.9379;4931";
 		msgToSend+=";978307202;0.9421;0.9599;0.9113;0.9379;4932";
 		msgToSend+=";978307203;0.9421;0.9599;0.9113;0.9379;4933";
 		msgToSend+=";978307204;0.9421;0.9599;0.9113;0.9379;4934";

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CarStock>
+	<cars>
+		<avtomobilj>
+			<id>0</id>
+			<model>
+				<model>A6</model>
+				<brand>Audi</brand>
+			</model>
+			<date>10.07.2011</date>
+			<regNumber>RR TT X0</regNumber>
+		</avtomobilj>
+		<avtomobilj>
+			<id>1</id>
+			<model>
+				<model>350</model>
+				<brand>BMW</brand>
+			</model>
+			<date>10.07.2011</date>
+			<regNumber>RR TT X1</regNumber>
+		</avtomobilj>
+		<avtomobilj>
+			<id>2</id>
+			<model>
+				<model>Civic</model>
+				<brand>Honda</brand>
+			</model>
+			<date>10.07.2011</date>
+			<regNumber>RR TT X2</regNumber>
+		</avtomobilj>
+		<avtomobilj>
+			<id>3</id>
+			<model>
+				<model>A5</model>
+				<brand>Audi</brand>
+			</model>
+			<date>10.07.2011</date>
+			<regNumber>RR TT X3</regNumber>
+		</avtomobilj>
+		<avtomobilj>
+			<id>4</id>
+			<model>
+				<model>A4</model>
+				<brand>Audi</brand>
+			</model>
+			<date>10.07.2011</date>
+			<regNumber>RR TT X4</regNumber>
+		</avtomobilj>
+	</cars>
+	<owners>
+		<owner>Vera</owner>
+		<owner>Dima</owner>
+		<owner>Vova</owner>
+	</owners>
+	<totalAmount>154,98</totalAmount>
+	<delery>21:45</delery>
+	<created>10.07.2011 21:43</created>
+</CarStock>

@@ -1,0 +1,16 @@
+.canvas{
+	position: relative;
+}
+
+.bar{
+	position: relative;
+	border: 1px solid #000000;
+	width: 2px;
+}
+
+.barUp{
+	background: #FFFFFF;
+}
+.barDown{
+	background: #101010;	
+}

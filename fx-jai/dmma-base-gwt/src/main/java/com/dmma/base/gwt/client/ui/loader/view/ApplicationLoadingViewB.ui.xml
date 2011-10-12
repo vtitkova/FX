@@ -1,0 +1,25 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<ui:with field='img' type='com.dmma.base.gwt.client.resources.img.BaseImages' />
+	<ui:with field='msg' type='com.dmma.base.gwt.client.resources.i18n.BaseMessages' />
+	<ui:with field='cssRes' type='com.dmma.base.gwt.client.resources.css.BaseCssResource'/>
+	
+		
+	<g:HTMLPanel>
+		<table class="{cssRes.style.baseLoadingPopup} {cssRes.style.autoMargin}">
+			<tr>
+				<td class="{cssRes.style.baseLoadingImage}" rowspan="2">
+					<g:Image resource='{img.loadingSmall}' />
+				</td>
+				<td class="{cssRes.style.baseLoadingCaption}">
+					<g:HTML ui:field="captionMsg" text="{msg.clientContext}"></g:HTML>
+				</td>
+			</tr>
+			<tr>
+				<td class="{cssRes.style.baseLoadingMsg}">
+					<g:HTML ui:field="aditionalMsg" text="{msg.loading}"></g:HTML>
+				</td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder>

@@ -1,0 +1,53 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui' 
+             xmlns:myRTE='urn:import:com.dmma.base.gwt.client.ui.rte' >
+    
+    <ui:with field='msg' type='com.dmma.base.gwt.client.resources.i18n.BaseMessages' />
+    
+    <g:HTMLPanel>
+			<g:HTMLPanel ui:field="suggestionsPanelContainer">
+				<table>
+					<tr>
+						<td>Name:</td>
+						<td><g:ListBox ui:field="nameLB"></g:ListBox></td>
+					</tr>
+					<tr>
+						<td><g:Button text="Next" ui:field="nextButton"></g:Button></td>
+						<td></td>
+					</tr>
+				</table>
+				<hr/>
+			</g:HTMLPanel>
+			<g:HTMLPanel ui:field="mailTemplatePanelContainer">
+				<table>
+					<tr>
+						<td>Template Key:</td>
+						<td><g:HTML ui:field="templateKey"/></td>
+					</tr>
+					<tr>
+						<td>Template Title:</td>
+						<td><g:HTML ui:field="templateTitle"/></td>
+					</tr>
+					<tr>
+						<td>Available TAGS:</td>
+						<td><g:HTML ui:field="availableTags"/></td>
+					</tr>
+					<tr>
+						<td>Header</td>
+						<td><g:TextBox ui:field="headerTB" width="99%"/></td>
+					</tr>
+					<tr>
+						<td>Body</td>
+						<td><myRTE:RichTextEditor ui:field="bodyRT"/></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td><g:Button ui:field="saveButton" text="{msg.save}" /></td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+			<g:HTMLPanel ui:field="loadingPanelContainer">
+				Loading ...
+			</g:HTMLPanel>
+    </g:HTMLPanel>
+</ui:UiBinder>

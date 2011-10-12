@@ -1,0 +1,142 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<ui:with field='img' type='com.dmma.base.gwt.client.ui.rte.img.RichTextEditorImages'/>
+	<ui:with field='msg' type='com.dmma.base.gwt.client.ui.rte.i18n.RichTextEditorMessages'/>
+	
+	<ui:style type='com.dmma.base.gwt.client.ui.rte.css.RichTextEditorCss' src='css/RichTextEditor.css' />
+	
+	
+	<g:HTMLPanel styleName="{style.richTextEditor}">
+        <table width="100%" cellpadding="0" cellspacing="0">
+        	<tr>
+        		<td>
+       				<table width="100%" cellpadding="0" cellspacing="0" class="{style.richTextToolbar}">
+						<tr>
+							<td>	
+								<table cellpadding="0" cellspacing="0">
+									<tr>
+										<td>
+											<g:ToggleButton ui:field="boldBT" title="{msg.bold}">
+												<g:upFace image='{img.bold}'/>
+											</g:ToggleButton>
+										</td>
+										<td>
+											<g:ToggleButton ui:field="italicBT" title="{msg.italic}">
+												<g:upFace image='{img.italic}'/>
+											</g:ToggleButton>
+										</td>
+										<td>
+											<g:ToggleButton ui:field="underlineBT" title="{msg.underline}">
+												<g:upFace image='{img.underline}'/>
+											</g:ToggleButton>
+										</td>
+										<td>
+											<g:ToggleButton ui:field="subscriptBT" title="{msg.subscript}">
+												<g:upFace image='{img.subscript}'/>
+											</g:ToggleButton>
+										</td>
+										<td>
+											<g:ToggleButton ui:field="superscriptBT" title="{msg.superscript}">
+												<g:upFace image='{img.superscript}'/>
+											</g:ToggleButton>
+										</td>
+										<td>
+											<g:PushButton ui:field="justifyLeftBT" title="{msg.justifyLeft}">
+												<g:upFace image='{img.justifyLeft}'/>
+											</g:PushButton>
+										</td>
+										<td>
+											<g:PushButton ui:field="justifyCenterBT" title="{msg.justifyCenter}">
+												<g:upFace image='{img.justifyCenter}'/>
+											</g:PushButton>
+										</td>
+										<td>
+											<g:PushButton ui:field="justifyRightBT" title="{msg.justifyRight}">
+												<g:upFace image='{img.justifyRight}'/>
+											</g:PushButton>
+										</td>
+										<td>
+											<g:ToggleButton ui:field="strikethroughBT" title="{msg.strikeThrough}">
+												<g:upFace image='{img.strikeThrough}'/>
+											</g:ToggleButton>
+										</td>
+										<td>
+											<g:PushButton ui:field="indentBT" title="{msg.indent}">
+												<g:upFace image='{img.indent}'/>
+											</g:PushButton>
+										</td>
+										<td>
+											<g:PushButton ui:field="outdentBT" title="{msg.outdent}">
+												<g:upFace image='{img.outdent}'/>
+											</g:PushButton>
+										</td>
+										<td>
+											<g:PushButton ui:field="hrBT" title="{msg.hr}">
+												<g:upFace image='{img.hr}'/>
+											</g:PushButton>
+										</td>
+										<td>
+											<g:PushButton ui:field="olBT" title="{msg.ol}">
+												<g:upFace image='{img.ol}'/>
+											</g:PushButton>
+										</td>
+										<td>
+											<g:PushButton ui:field="ulBT" title="{msg.ul}">
+												<g:upFace image='{img.ul}'/>
+											</g:PushButton>
+										</td>
+										<td>
+											<g:PushButton ui:field="insertImageBT" title="{msg.insertImage}">
+												<g:upFace image='{img.insertImage}'/>
+											</g:PushButton>
+										</td>
+										<td>
+											<g:PushButton ui:field="createLinkBT" title="{msg.createLink}">
+												<g:upFace image='{img.createLink}'/>
+											</g:PushButton>
+										</td><td>
+											<g:PushButton ui:field="removeLinkBT" title="{msg.removeLink}">
+												<g:upFace image='{img.removeLink}'/>
+											</g:PushButton>
+										</td><td>
+											<g:PushButton ui:field="removeFormatBT" title="{msg.removeFormat}">
+												<g:upFace image='{img.removeFormat}'/>
+											</g:PushButton>
+										</td>
+									</tr>	
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<table width="100%" cellpadding="0" cellspacing="0">
+									<tr>
+										<td>
+											<g:ListBox ui:field="backColorsLB" />
+										</td>
+										<td>
+											<g:ListBox ui:field="foreColorsLB" />
+										</td>
+										<td>
+											<g:ListBox ui:field="fontsLB" />
+										</td>
+										<td>
+											<g:ListBox ui:field="fontSizesLB" />
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+        		</td>
+        	</tr>
+        	<tr>
+        		<td>
+        			<div>
+        				<g:RichTextArea ui:field="richTextArea" styleName="{style.richTextArea}"/>
+        			</div>
+        		</td>
+        	</tr>
+        </table>
+    </g:HTMLPanel>
+</ui:UiBinder>

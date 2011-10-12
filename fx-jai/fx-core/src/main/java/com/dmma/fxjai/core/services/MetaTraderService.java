@@ -10,10 +10,10 @@ import com.dmma.fxjai.db.entities.Account;
 import com.dmma.fxjai.db.entities.Poc;
 import com.dmma.fxjai.db.services.AccountDBService;
 import com.dmma.fxjai.db.services.BarDBService;
-import com.dmma.fxjai.shared.dto.BarDTO;
-import com.dmma.fxjai.shared.types.AccountType;
-import com.dmma.fxjai.shared.types.PeriodType;
-import com.dmma.fxjai.shared.types.SymbolType;
+import com.dmma.fxjai.shared.shared.dto.BarDTO;
+import com.dmma.fxjai.shared.shared.types.AccountType;
+import com.dmma.fxjai.shared.shared.types.PeriodType;
+import com.dmma.fxjai.shared.shared.types.SymbolType;
 
 public class MetaTraderService {
 	private static final Logger log = LoggerFactory.getLogger(MetaTraderService.class);
@@ -60,12 +60,9 @@ public class MetaTraderService {
 	}
 
 
-	public void updateBar(String account, BarDTO bar) {
-		barDBService.saveOrUpdate(bar);
+	public void updateBar(Integer accountId, SymbolType symbol, PeriodType period, BarDTO bar) {
+		 barDBService.saveOrUpdate(accountId,symbol, period, bar);
 	}
-
-	
-
 	
 	public BarDTO getLastBar(String account, Integer accountId,	SymbolType symbol, PeriodType period) {
 		return barDBService.getLastBar(accountId,symbol, period);

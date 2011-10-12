@@ -11,6 +11,9 @@
 
 	<bean id="dataSource" class="com.dmma.fxjai.core.configuration.ApplicationDataSource" destroy-method="close">
 	</bean>
+	
+	<bean id="mailServerConfigurator" class="com.dmma.fxjai.core.configuration.MailServerConfiguratorImpl" />
+	
 		
 	<!-- HIBERNATE SESSION FACTORY -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
@@ -21,33 +24,41 @@
 	<!-- All beans that handles business logic -->
 	
 	<!-- DAOs -->
+	<bean id="mailTemplateDao"   class="com.dmma.base.app.mail.daos.MailTemplateDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="mailDao"   class="com.dmma.base.app.mail.daos.MailDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 	<bean id="pocDao"          class="com.dmma.fxjai.db.daos.PocDao">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 	<bean id="accountDao"      class="com.dmma.fxjai.db.daos.AccountDao">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="barD1Dao"      class="com.dmma.fxjai.db.daos.BarD1Dao">
+	<bean id="barDao"      class="com.dmma.fxjai.db.daos.BarDao">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="barW1Dao"      class="com.dmma.fxjai.db.daos.BarW1Dao">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	<bean id="barMNDao"      class="com.dmma.fxjai.db.daos.BarMNDao">
-		<property name="sessionFactory" ref="sessionFactory"/>
-	</bean>
-	
 	<!-- end DAOs -->
 
 
 	<!-- DBServices -->
+	<bean id="mailTemplateService" class="com.dmma.base.app.mail.services.MailTemplateService">
+		<property name="mailTemplateDao" ref="mailTemplateDao"/>
+	</bean>
+	<bean id="mailService" class="com.dmma.base.app.mail.services.MailService">
+		<property name="mailDao" ref="mailDao"/>
+	</bean>
+	<bean id="mailProcessor" class="com.dmma.base.app.mail.services.MailProcessor">
+		<property name="mailService" ref="mailService"/>
+		<property name="mailServerConfigurator" ref="mailServerConfigurator"/>
+	</bean>
+	
 	<bean id="accountDBService"     class="com.dmma.fxjai.db.services.AccountDBService">
 		<property name="accountDao" ref="accountDao"/>
 	</bean>
-	<bean id="barDBService"       class="com.dmma.fxjai.db.services.BarDBService">
-		<property name="barD1Dao" ref="barD1Dao"/>
-		<property name="barW1Dao" ref="barW1Dao"/>
-		<property name="barMNDao" ref="barMNDao"/>
+	<bean id="barDBService"        class="com.dmma.fxjai.db.services.BarDBService">
+		<property name="barDao"    ref="barDao"/>
 	</bean>
 	
 	<!-- DBServices -->

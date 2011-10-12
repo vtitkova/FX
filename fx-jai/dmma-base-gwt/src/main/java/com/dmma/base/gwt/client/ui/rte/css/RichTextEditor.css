@@ -1,0 +1,13 @@
+.richTextEditor{
+	width: 100%;
+}
+.richTextToolbar{
+	background: url("images/hborder.png") repeat-x scroll 0 -2003px #E3E8F3;
+    border-bottom: 1px solid #BBBBBB;
+    margin: 0;
+    padding: 3px;
+}
+
+.richTextArea{
+	width: 99%;
+}

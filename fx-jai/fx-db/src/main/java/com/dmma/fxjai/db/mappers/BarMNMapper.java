@@ -1,11 +1,11 @@
-package com.dmma.fxjai.db.mappers;
+/*package com.dmma.fxjai.db.mappers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dmma.fxjai.db.entities.BarMN;
-import com.dmma.fxjai.shared.dto.BarDTO;
-import com.dmma.fxjai.shared.types.PeriodType;
+import com.dmma.fxjai.shared.shared.dto.BarDTO;
+import com.dmma.fxjai.shared.shared.types.PeriodType;
 
 public class BarMNMapper {
 
@@ -13,7 +13,7 @@ public class BarMNMapper {
 		if(source == null) return null;
 		BarDTO target = new BarDTO();
 		target.setId(       source.getId());
-		target.setPeriod(   PeriodType.isMN1.getId());
+		target.setPeriod(   PeriodType.MN1.getId());
 		target.setClientId( source.getClientId());
 		target.setSymbolId( source.getSymbolId());
 		target.setOpenDateTime(source.getOpenDateTime());
@@ -51,3 +51,4 @@ public class BarMNMapper {
 		return target;
 	}
 }
+*/

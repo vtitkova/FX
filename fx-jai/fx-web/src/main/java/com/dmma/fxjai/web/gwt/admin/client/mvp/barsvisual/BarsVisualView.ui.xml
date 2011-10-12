@@ -1,0 +1,57 @@
+<ui:UiBinder xmlns:ui  = "urn:ui:com.google.gwt.uibinder"
+             xmlns:g   = "urn:import:com.google.gwt.user.client.ui"
+             xmlns:dp  = "urn:import:com.google.gwt.user.datepicker.client" 
+             xmlns:c   = "urn:import:com.google.gwt.user.cellview.client"
+             xmlns:etf = "urn:import:com.dmma.base.gwt.client.ui.etf"
+             xmlns:pgr = "urn:import:com.dmma.base.gwt.client.ui.pager">
+
+    <ui:with field="msg" type="com.dmma.base.gwt.client.resources.i18n.BaseMessages" />
+    <ui:with field="fxMsg" type="com.dmma.fxjai.web.gwt.core.client.i18n.FXMessages" />
+	<ui:style>
+	    .table {
+	    	margin: 5px;
+	    	border: 1px dashed #CCCCCC;
+	    }
+    </ui:style>
+             
+    <g:HTMLPanel>
+			<table width="100%" cellpadding="0"	cellspacing="0" >
+				<tr>
+					<td>
+						<table width="100%" cellpadding="0"	cellspacing="0">
+							<tr>
+								<td>
+									<g:Label text="{fxMsg.account}"/>
+									<g:ListBox ui:field="accountLB"/>
+								</td>
+								<td>
+									<g:Label text="{fxMsg.symbolType}"/>
+									<g:ListBox ui:field="symbolLB"/>
+								</td>
+								<td>
+									<g:Label text="{fxMsg.periodType}"/>
+									<g:ListBox ui:field="periodLB"/>
+								</td>
+								<td>
+									<g:Label text="{msg.from}"/>
+									<dp:DateBox  ui:field="fromDP"/>
+								</td>
+								<td>
+									<g:Label text="{msg.to}"/>
+									<dp:DateBox  ui:field="toDP"/>
+								</td>
+								<td>
+									<g:Button ui:field="searchButton" text="{msg.find}"/>
+								</td>
+							</tr>
+						</table>
+					</td>	
+				</tr>
+				<tr>
+					<td>
+						<g:ScrollPanel addStyleNames="{style.table}" ui:field="scrollPanel" />
+					</td>	
+				</tr>
+			</table>
+    </g:HTMLPanel>
+</ui:UiBinder>
