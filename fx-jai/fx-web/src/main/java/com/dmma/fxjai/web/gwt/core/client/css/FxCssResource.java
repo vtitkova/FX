@@ -31,6 +31,7 @@ public interface FxCssResource extends ClientBundle {
 		public String bar();
 		public String barUp();
 		public String barDown();
+		public String barStrike();
 	}
 	
 	

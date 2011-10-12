@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.dmma.base.gwt.client.resources.i18n.BaseMessages;
-import com.dmma.base.gwt.client.resources.img.BaseImages;
 import com.dmma.base.gwt.client.utils.BaseListBoxUtils;
 import com.dmma.base.gwt.shared.dtos.ListBoxDTO;
 import com.dmma.fxjai.shared.shared.dto.BarDTO;
@@ -15,8 +14,8 @@ import com.dmma.fxjai.shared.shared.types.SymbolType;
 import com.dmma.fxjai.web.gwt.core.client.css.FxCssResource;
 import com.dmma.fxjai.web.gwt.core.client.css.FxCssResource.FxCss;
 import com.dmma.fxjai.web.gwt.core.client.i18n.FXMessages;
+import com.dmma.fxjai.web.gwt.core.client.ui.barcanvas.BarCanvas;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -25,8 +24,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -52,7 +49,7 @@ public class BarsVisualView extends Composite implements  BarsVisualDisplay{
 	@UiField
 	ScrollPanel scrollPanel ;
 	
-	private FlowPanel canvas;
+	private BarCanvas canvas;
 		
 	public BarsVisualView(){
 		
@@ -70,9 +67,8 @@ public class BarsVisualView extends Composite implements  BarsVisualDisplay{
 		symbolLB.addItem(SymbolType.EURUSD.toString(), SymbolType.EURUSD.getId().toString());
 		symbolLB.addItem(SymbolType.GBPUSD.toString(), SymbolType.GBPUSD.getId().toString());
 	
-		canvas = new FlowPanel();
-		canvas.setStyleName(fxCss.canvas());
-		fxCss.ensureInjected();
+		canvas = new BarCanvas();
+
 		scrollPanel.setWidget(canvas);
 		Window.addResizeHandler(new ResizeHandler() {
 			@Override
@@ -97,31 +93,13 @@ public class BarsVisualView extends Composite implements  BarsVisualDisplay{
 
 	@Override
 	public void setData(List<BarDTO> data) {
-		canvas.clear();
-		
-		
-		renderOneBar(0,data.get(0));
-		
+		canvas.setData(data);
 	}
-
 	
-	
-	private void renderOneBar(int i, BarDTO barDTO) {
-		FlowPanel barBody = new FlowPanel();
-		barBody.setStyleName(fxCss.bar());
-		barBody.addStyleName(fxCss.barDown());
-
-		barBody.getElement().getStyle().setTop(10, Unit.PX);
-		barBody.getElement().getStyle().setHeight(100, Unit.PX);
-		canvas.add(barBody);
-		
-	}
-
-
 	@Override
 	public void setDataRequested() {
-		canvas.clear();
-		canvas.add(new Image(BaseImages.IMG.loadingSmall()));
+		//canvas.clear();
+		//TODO canvas.add(new Image(BaseImages.IMG.loadingSmall()));
 	}
 
 	@Override
@@ -139,7 +117,7 @@ public class BarsVisualView extends Composite implements  BarsVisualDisplay{
 	public void setSelectedSymbolId(Integer symbolId) {
 		BaseListBoxUtils.setSelectedItemByValue(symbolLB, symbolId);
 	}
-	
+	// canvas
 	@Override
 	public BarSearchFilter getBarSearchFilter() {
 		BarSearchFilter retVal = new BarSearchFilter();

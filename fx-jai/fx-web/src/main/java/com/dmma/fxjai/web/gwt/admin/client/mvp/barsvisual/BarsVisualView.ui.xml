@@ -10,7 +10,6 @@
 	<ui:style>
 	    .table {
 	    	margin: 5px;
-	    	border: 1px dashed #CCCCCC;
 	    }
     </ui:style>
              

@@ -1,0 +1,20 @@
+<ui:UiBinder xmlns:ui  = "urn:ui:com.google.gwt.uibinder"
+             xmlns:g   = "urn:import:com.google.gwt.user.client.ui"
+             xmlns:dp  = "urn:import:com.google.gwt.user.datepicker.client" 
+             xmlns:c   = "urn:import:com.google.gwt.user.cellview.client"
+             xmlns:etf = "urn:import:com.dmma.base.gwt.client.ui.etf"
+             xmlns:pgr = "urn:import:com.dmma.base.gwt.client.ui.pager">
+
+    <ui:with field="msg" type="com.dmma.base.gwt.client.resources.i18n.BaseMessages" />
+    <ui:with field="fxMsg" type="com.dmma.fxjai.web.gwt.core.client.i18n.FXMessages" />
+	<ui:style>
+	    .table {
+	    	margin: 5px;
+	    	border: 1px dashed #CCCCCC;
+	    }
+    </ui:style>
+             
+    <g:HTMLPanel>
+			
+    </g:HTMLPanel>
+</ui:UiBinder>

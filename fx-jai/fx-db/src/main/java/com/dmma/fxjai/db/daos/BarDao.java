@@ -54,7 +54,7 @@ public class BarDao{
 			StringBuffer sb = new StringBuffer();
 			sb.append("select openDateTime, open, high, low, close, volume from ");
 			sb.append(tableName);
-			sb.append(" order by openDateTime desc ");
+			sb.append(" order by openDateTime asc ");
 			
 			Query query = sesion.createSQLQuery(sb.toString());
 			query.setResultTransformer(Transformers.aliasToBean(BarDTO.class));

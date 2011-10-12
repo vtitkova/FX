@@ -1,16 +1,23 @@
 .canvas{
 	position: relative;
+	border: 1px dashed #CCCCCC;
 }
 
 .bar{
-	position: relative;
+	position: absolute;
 	border: 1px solid #000000;
-	width: 2px;
+	width: 3px;
 }
 
 .barUp{
-	background: #FFFFFF;
+	background: #303030;	
 }
 .barDown{
-	background: #101010;	
+	background: #FFFFFF;
+}
+
+.barStrike{
+	position: absolute;
+	background: #303030;
+	width: 1px;
 }
