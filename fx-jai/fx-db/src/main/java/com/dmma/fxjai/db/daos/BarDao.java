@@ -21,19 +21,37 @@ public class BarDao{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<BarDTO> find(final String tableName, Integer openDateTimeFrom, Integer openDateTo) {
+	public List<BarDTO> find(final String tableName, Integer openDateTimeFrom, Integer openDateTimeTo, Boolean orderDesc) {
 		Session sesion = sessionFactory.openSession();
 		try{
 			StringBuffer sb = new StringBuffer();
 			sb.append("select openDateTime, open, high, low, close, volume from ");
 			sb.append(tableName);
-			//TODO if(openDateTimeFrom != null)
-			//TODO if(openDateTimeTo != null)
+			sb.append(" where 1=1 " );
 			
+			if(openDateTimeFrom != null){
+				sb.append("AND openDateTime >= ? " );
+			}
+			if(openDateTimeTo != null){
+				sb.append("AND openDateTime <= ? " );
+			}
+			if(orderDesc != null && orderDesc)
+				sb.append(" order by openDateTime desc ");
+			else
+				sb.append(" order by openDateTime asc ");
 			
-			sb.append(" order by openDateTime desc ");
 			
 			Query query = sesion.createSQLQuery(sb.toString());
+			int i = 0;
+			if(openDateTimeFrom != null){
+				query.setInteger(i, openDateTimeFrom);
+				i++;
+			}
+			if(openDateTimeTo != null){
+				query.setInteger(i, openDateTimeTo);
+				i++;
+			}
+			
 			query.setResultTransformer(Transformers.aliasToBean(BarDTO.class));
 			List<BarDTO> list = query.list();
 			return list;

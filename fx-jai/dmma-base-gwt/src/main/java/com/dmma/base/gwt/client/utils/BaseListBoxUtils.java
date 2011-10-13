@@ -3,7 +3,6 @@ package com.dmma.base.gwt.client.utils;
 import java.util.ArrayList;
 
 import com.dmma.base.gwt.client.resources.i18n.BaseMessages;
-import com.dmma.base.gwt.client.ui.gwtentity.GwtEntityInterface;
 import com.dmma.base.gwt.shared.dtos.ListBoxDTO;
 import com.google.gwt.user.client.ui.ListBox;
 
@@ -99,21 +98,6 @@ public class BaseListBoxUtils {
 	}
 	
 	// work with list boxes
-	
-	/**
-	 *	Set only id into ListBox
-	 *	Examlpe: first we receive  
-	 * */
-	public static void setOnlyOneIdToLB(ListBox listBox, GwtEntityInterface dto) {
-		listBox.clear();
-		if(dto!=null){
-			listBox.addItem(""+dto.getId(), ""+dto.getId());
-			listBox.setEnabled(false);
-		}else{
-			listBox.addItem(BaseMessages.MSG.notFound(), NOT_FOUND);
-			listBox.setEnabled(false);
-		}
-	}
 	
 	public static void setItemsToLBKeepId(ListBox listBox, ArrayList<ListBoxDTO> data) {
 		String value = getSelectedValueAsString(listBox);

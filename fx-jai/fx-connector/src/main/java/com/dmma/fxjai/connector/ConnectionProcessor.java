@@ -155,10 +155,17 @@ public class ConnectionProcessor implements Runnable{
 		Integer accountId = Integer.valueOf(messageArray[2].trim());
 		SymbolType symbol = SymbolType.findByStr(messageArray[3].replace(".","").trim());
 
-		BarDTO barMN = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.MN1);
-		BarDTO barW1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.W1);
-		BarDTO barD1 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.D1);
+		BarDTO barMN  = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.MN1);
+		BarDTO barW1  = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.W1);
+		BarDTO barD1  = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.D1);
+		BarDTO barH4  = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.H4);
+		BarDTO barH1  = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.H1);
+		BarDTO barM30 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.M30);
+		BarDTO barM15 = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.M15);
+		BarDTO barM5  = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.M5);
+		BarDTO barM1  = metaTraderService.getLastBar(account, accountId, symbol, PeriodType.M1);
 
+		
 		StringBuilder response = new StringBuilder();
 		response.append(OutcomeMsgType.isLastBarResponce.getId());
 		response.append(SEPARATOR);
@@ -169,6 +176,18 @@ public class ConnectionProcessor implements Runnable{
 		response.append(barW1==null?"0":barW1.getOpenDateTime());
 		response.append(SEPARATOR);
 		response.append(barD1==null?"0":barD1.getOpenDateTime());
+		response.append(SEPARATOR);
+		response.append(barH4==null?"0":barH4.getOpenDateTime());
+		response.append(SEPARATOR);
+		response.append(barH1==null?"0":barH1.getOpenDateTime());
+		response.append(SEPARATOR);
+		response.append(barM30==null?"0":barM30.getOpenDateTime());
+		response.append(SEPARATOR);
+		response.append(barM15==null?"0":barM15.getOpenDateTime());
+		response.append(SEPARATOR);
+		response.append(barM5==null?"0":barM5.getOpenDateTime());
+		response.append(SEPARATOR);
+		response.append(barM1==null?"0":barM1.getOpenDateTime());
 		return response.toString();
 	}
 

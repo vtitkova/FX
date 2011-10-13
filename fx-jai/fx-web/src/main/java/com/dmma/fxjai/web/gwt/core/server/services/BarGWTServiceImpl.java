@@ -30,13 +30,7 @@ public class BarGWTServiceImpl extends RemoteServiceServlet implements BarGWTSer
 	
 	@Override
 	public List<BarDTO> find(BarSearchFilter filter) {
-		return barDBService.findAll(filter.getAccountId(), filter.getSymbol(), filter.getPeriod());
-	}
-
-	@Override
-	public Integer test(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		return barDBService.findByFilter(filter);
 	}
 
 }

@@ -10,6 +10,7 @@ import com.dmma.base.gwt.client.resources.i18n.BaseMessages;
 import com.dmma.base.gwt.client.resources.img.BaseImages;
 import com.dmma.base.gwt.client.ui.etf.EtfTable;
 import com.dmma.base.gwt.client.ui.etf.EtfTableModel;
+import com.dmma.base.gwt.client.utils.BaseDateBoxUtils;
 import com.dmma.base.gwt.client.utils.BaseListBoxUtils;
 import com.dmma.base.gwt.shared.dtos.ListBoxDTO;
 import com.dmma.fxjai.shared.shared.dto.BarDTO;
@@ -57,13 +58,12 @@ public class BarsView extends Composite implements  BarsDisplay{
 		contentTable = new EtfTable<BarDTO, BarLightCM>(tableModel, false, true, MailFormPresenter.PRESENTER_ID);
 		contentTable.setEditImageResource(BaseImages.IMG.editSmall());
 		contentTable.setHeightDecreaseValue(122);
-		// mailStatusCellRenderer = new MailStatusCellRenderer();
-		// contentTable.addRenderer(1, mailStatusCellRenderer);
-		
 		initWidget(uiBinder.createAndBindUi(this));
 		
+		BaseDateBoxUtils.setFormat(fromDP);
+		BaseDateBoxUtils.setFormat(toDP);
+		
 		accountLB.addItem(BaseMessages.MSG.all(), BaseListBoxUtils.SELECT_IND);
-
 		
 		periodLB.addItem(BaseMessages.MSG.select(),  BaseListBoxUtils.SELECT_IND);
 		periodLB.addItem(PeriodType.MN1.getName(), PeriodType.MN1.getId().toString());
@@ -108,13 +108,14 @@ public class BarsView extends Composite implements  BarsDisplay{
 	@Override
 	public BarSearchFilter getBarSearchFilter() {
 		BarSearchFilter retVal = new BarSearchFilter();
+		retVal.setOrderDesc(true);
 		retVal.setAccountId(BaseListBoxUtils.getSelectedValueAsInteger(accountLB));
 		retVal.setSymbol(SymbolType.findById(BaseListBoxUtils.getSelectedValueAsInteger(symbolLB)));
 		retVal.setPeriod(PeriodType.findById(BaseListBoxUtils.getSelectedValueAsInteger(periodLB)));
 		
 		 
 		retVal.setFrom(trimValue(fromDP.getValue()));
-		retVal.setTo(trimValue(toDP.getValue()));
+		retVal.setTo(  trimValue(toDP.getValue()));
 		return retVal;
 	}
 
@@ -123,6 +124,10 @@ public class BarsView extends Composite implements  BarsDisplay{
 	private Integer trimValue(Date value) {
 		if(value == null)
 			return null;
+		
+		System.out.println(value.toGMTString());
+		System.out.println(value);
+		
 		Long time = value.getTime()/1000;
 		return time.intValue();
 	}

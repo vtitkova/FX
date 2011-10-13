@@ -13,6 +13,9 @@ public class BaseDateUtils {
 	}
 
 	
+	public static Date getLastMinute(Date date){
+		return new Date(addDays(date, 1).getTime() - 1);
+	}
 	
 		
 	/**

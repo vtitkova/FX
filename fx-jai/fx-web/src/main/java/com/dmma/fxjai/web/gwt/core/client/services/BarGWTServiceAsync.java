@@ -11,5 +11,4 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface BarGWTServiceAsync {
 	public void find(BarSearchFilter filter, AsyncCallback<List<BarDTO>> callback);
-	public void test(Integer id, AsyncCallback<Integer> callback);
 }

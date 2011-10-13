@@ -5,14 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.dmma.base.gwt.client.resources.i18n.BaseMessages;
+import com.dmma.base.gwt.client.utils.BaseDateBoxUtils;
 import com.dmma.base.gwt.client.utils.BaseListBoxUtils;
 import com.dmma.base.gwt.shared.dtos.ListBoxDTO;
 import com.dmma.fxjai.shared.shared.dto.BarDTO;
 import com.dmma.fxjai.shared.shared.filters.BarSearchFilter;
 import com.dmma.fxjai.shared.shared.types.PeriodType;
 import com.dmma.fxjai.shared.shared.types.SymbolType;
-import com.dmma.fxjai.web.gwt.core.client.css.FxCssResource;
-import com.dmma.fxjai.web.gwt.core.client.css.FxCssResource.FxCss;
 import com.dmma.fxjai.web.gwt.core.client.i18n.FXMessages;
 import com.dmma.fxjai.web.gwt.core.client.ui.barcanvas.BarCanvas;
 import com.google.gwt.core.client.GWT;
@@ -37,8 +36,6 @@ public class BarsVisualView extends Composite implements  BarsVisualDisplay{
 	private boolean accountsRecived = false; 
 	private Integer accountToBeSelected = null;
 	
-	private FxCss fxCss =  FxCssResource.RES.style();
-	
 	@UiField ListBox accountLB;
 	@UiField ListBox symbolLB;
 	@UiField ListBox periodLB;
@@ -55,6 +52,9 @@ public class BarsVisualView extends Composite implements  BarsVisualDisplay{
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		accountLB.addItem(BaseMessages.MSG.all(), BaseListBoxUtils.SELECT_IND);
+		
+		BaseDateBoxUtils.setFormat(fromDP);
+		BaseDateBoxUtils.setFormat(toDP);
 		
 		periodLB.addItem(BaseMessages.MSG.select(),  BaseListBoxUtils.SELECT_IND);
 		periodLB.addItem(PeriodType.MN1.getName(), PeriodType.MN1.getId().toString());
@@ -121,6 +121,7 @@ public class BarsVisualView extends Composite implements  BarsVisualDisplay{
 	@Override
 	public BarSearchFilter getBarSearchFilter() {
 		BarSearchFilter retVal = new BarSearchFilter();
+		retVal.setOrderDesc(false);
 		retVal.setAccountId(BaseListBoxUtils.getSelectedValueAsInteger(accountLB));
 		retVal.setSymbol(SymbolType.findById(BaseListBoxUtils.getSelectedValueAsInteger(symbolLB)));
 		retVal.setPeriod(PeriodType.findById(BaseListBoxUtils.getSelectedValueAsInteger(periodLB)));

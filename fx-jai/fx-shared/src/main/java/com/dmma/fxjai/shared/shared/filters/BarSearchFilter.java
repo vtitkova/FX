@@ -10,8 +10,11 @@ public class BarSearchFilter implements IsSerializable{
 	private PeriodType period;
 	private Integer from;
 	private Integer to;
+	private Boolean orderDesc;
+	
 	
 	public BarSearchFilter() {
+		setOrderDesc(false);
 	}
 
 	public SymbolType getSymbol() {
@@ -58,6 +61,14 @@ public class BarSearchFilter implements IsSerializable{
 		if(accountId == null || symbol == null || period == null)
 			return false;
 		return true;
+	}
+
+	public Boolean getOrderDesc() {
+		return orderDesc;
+	}
+
+	public void setOrderDesc(Boolean orderDesc) {
+		this.orderDesc = orderDesc;
 	}
 
 }

@@ -13,5 +13,4 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("BarGWTService")
 public interface BarGWTService extends RemoteService {
 	public List<BarDTO> find(BarSearchFilter filter);
-	public Integer  test(Integer id);
 }

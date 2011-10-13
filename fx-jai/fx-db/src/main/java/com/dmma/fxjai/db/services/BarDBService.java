@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dmma.fxjai.db.daos.BarDao;
 import com.dmma.fxjai.shared.shared.dto.BarDTO;
+import com.dmma.fxjai.shared.shared.filters.BarSearchFilter;
 import com.dmma.fxjai.shared.shared.types.PeriodType;
 import com.dmma.fxjai.shared.shared.types.SymbolType;
 
@@ -45,12 +46,18 @@ public class BarDBService {
 	}
 
 	
-	public List<BarDTO> findAll(Integer clientId, SymbolType symbol, PeriodType period){
-		return barDao.findAll(createTableName(clientId, symbol, period));
+	public List<BarDTO> findByFilter(BarSearchFilter filter){
+		String tableName = createTableName(filter.getAccountId(), filter.getSymbol(), filter.getPeriod());
+		if(tableName == null)
+			return null;
+		
+		return barDao.find(tableName, filter.getFrom(), filter.getTo(), filter.getOrderDesc());
 	}
 
 	
 	public static String createTableName(Integer clientId, SymbolType symbol, PeriodType period){
+		if(clientId == null || symbol == null || period == null)
+			return null;
 		StringBuffer sb = new StringBuffer();
 		sb.append("bar_").append(clientId).append("_").append(symbol.toString().toLowerCase()).append("_").append(period.toString().toLowerCase());
 		return sb.toString();
